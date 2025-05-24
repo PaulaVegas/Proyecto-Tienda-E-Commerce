@@ -43,7 +43,7 @@ que el alumno desarrolle una API REST que sea capaz de lo siguiente:
 -   Clona el repositorio
 
 ```bash
-
+git clone https://github.com/PaulaVegas/Proyecto-Tienda-E-Commerce.git
 ```
 
 -   Instala dependencias
@@ -61,7 +61,7 @@ npm run dev
 ## 👨‍💻 Autoras
 
 -   ✍️ Maider
--   🐙 [@Maiderspb](https://www.github.com/Maiderspb)
+    🐙 [@Maiderspb](https://www.github.com/Maiderspb)
 
 -   ✍️ Paula
--   🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
+    🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
