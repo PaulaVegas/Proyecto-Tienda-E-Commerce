@@ -11,5 +11,14 @@ const CategoryController = {
             )
             .catch(err => console.error(err));
     },
+
+    // Actualizar una categoría
+    async update(req, res) {
+        await Category.update(
+            { name: req.body.name, description: req.body.description },
+            { where: { id: req.params.id } }
+        );
+        res.send('Categoría actualizada con éxito');
+    },
 };
 module.exports = CategoryController;
