@@ -1,10 +1,11 @@
 {
   "name": "proyecto-tienda-e-commerce",
   "version": "1.0.0",
-  "description": "",
+  "description": "En el proyecto de backend se combinará los conocimientos adquiridos en las\r tecnologías node + express, además de mysql/sequelize.\r El alumno tendrá que hacer la presentación y defensa de un diagrama\r explicando las relaciones entre las tablas. El proyecto consistirá en una tienda online(e-commerce)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
     "express": "^5.1.0",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
