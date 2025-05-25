@@ -22,6 +22,14 @@ const CategoryController = {
     },
 
     // Eliminar una categoría
+    async delete(req, res) {
+        await Category.destroy({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.send('La categoría ha sido eliminada con éxito');
+    },
 
     // Devolver categoría con id
     // ***** Cuando estén todos los productos creados, deberá traer también los productos asociados
