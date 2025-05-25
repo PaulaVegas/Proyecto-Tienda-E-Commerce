@@ -11,6 +11,14 @@ const ProductController = {
                 await product.setCategories(categoryIds);
             }
 
+            const productWithCategories = await Product.findByPk(product.id, {
+                include: {
+                    model: Category,
+                    as: 'categories',
+                    through: { attributes: [] },
+                },
+            });
+
             res.status(201).json(product);
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -28,8 +36,16 @@ const ProductController = {
             await product.update({ name, price });
 
             if (categoryIds) {
-                await product.setCategories(categoryIds); // corregido setCategories
+                await product.setCategories(categoryIds);
             }
+
+            const productWithCategories = await Product.findByPk(product.id, {
+                include: {
+                    model: Category,
+                    as: 'categories',
+                    through: { attributes: [] },
+                },
+            });
 
             res.json(product);
         } catch (error) {
