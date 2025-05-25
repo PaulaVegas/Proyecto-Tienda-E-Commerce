@@ -1,4 +1,6 @@
-const { Category } = require('../models/index.js');
+const { Category, Sequelize } = require('../models/index.js');
+const { Op } = Sequelize;
+
 const CategoryController = {
     // Crear una categoría
     create(req, res) {
@@ -46,6 +48,18 @@ const CategoryController = {
             console.error(err);
             res.status(500).send({ message: 'Error al buscar la categoría' });
         }
+    },
+
+    // Devolver categoría por nombre
+    getOneByName(req, res) {
+        Category.findOne({
+            where: {
+                name: {
+                    [Op.like]: `%${req.params.name}%`,
+                },
+            },
+            // include: [Product], para cuando esté product creado
+        }).then(category => res.send(category));
     },
 };
 module.exports = CategoryController;
