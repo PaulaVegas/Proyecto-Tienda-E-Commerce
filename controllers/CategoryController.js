@@ -20,5 +20,24 @@ const CategoryController = {
         );
         res.send('Categoría actualizada con éxito');
     },
+
+    // Eliminar una categoría
+
+    // Devolver categoría con id
+    // ***** Cuando estén todos los productos creados, deberá traer también los productos asociados
+    async getById(req, res) {
+        try {
+            const category = await Category.findByPk(req.params.id);
+            if (!category) {
+                return res
+                    .status(404)
+                    .send({ message: 'Categoría no encontrada' });
+            }
+            res.send(category);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ message: 'Error al buscar la categoría' });
+        }
+    },
 };
 module.exports = CategoryController;
