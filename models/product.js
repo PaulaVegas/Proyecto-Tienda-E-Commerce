@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // Un producto pertenece a una categoría
             Product.belongsToMany(models.Category, {
-               through: models.ProductCategory
+                through: 'ProductCategory',
             });
 
             // Un producto puede estar en muchos pedidos

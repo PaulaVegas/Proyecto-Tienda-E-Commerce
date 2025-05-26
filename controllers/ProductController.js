@@ -1,20 +1,19 @@
-const { Product, Category } = require('../models/index.js');
+const { Product, Category, ProductCategory } = require('../models/index.js');
 const { Op } = require('sequelize');
 
 const ProductController = {
     createProduct(req, res) {
-        product
-            .create(req.body)
-            .then(product => {
-                product.addCategory(req.body.CategoryId);
-                res.send(product);
+        Product.create(req.body)
+            .then(Product => {
+                Product.addCategory(req.body.CategoryId);
+                res.send(Product);
             })
             .catch(err => console.error(err));
     },
 
     async getAll(req, res) {
         try {
-            const products = await product.findAll({
+            const products = await Product.findAll({
                 include: [{ model: Category, through: { attributes: [] } }],
             });
             res.send(products);
@@ -25,10 +24,10 @@ const ProductController = {
 
     async delete(req, res) {
         try {
-            await product.destroy({
+            await Product.destroy({
                 where: { id: req.params.id },
             });
-            await CategoryProduct.destroy({
+            await ProductCategory.destroy({
                 where: { ProductId: req.params.id },
             });
             res.send({ message: 'El producto ha sido eliminado' });
@@ -39,11 +38,11 @@ const ProductController = {
 
     async update(req, res) {
         try {
-            await product.update(req.body, {
+            await Product.update(req.body, {
                 where: { id: req.params.id },
             });
-            const product = await product.findByPk(req.params.id);
-            book.setCategories(req.body.CategoryId);
+            const Product = await product.findByPk(req.params.id);
+            Product.setCategories(req.body.CategoryId);
             res.send('Producto actualizado con éxito');
         } catch (error) {
             console.error(error);
@@ -55,20 +54,20 @@ const ProductController = {
 
     async getById(req, res) {
         try {
-            const product = await Product.findByPk(req.params.id, {
+            const Product = await Product.findByPk(req.params.id, {
                 include: {
                     model: Category,
                     as: 'Category',
                 },
             });
 
-            if (!product) {
+            if (!Product) {
                 return res
                     .status(404)
                     .send({ message: 'Producto no encontrado' });
             }
 
-            res.json(product);
+            res.json(Product);
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: 'Error al buscar el producto' });
