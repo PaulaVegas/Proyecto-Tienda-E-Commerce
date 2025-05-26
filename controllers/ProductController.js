@@ -1,90 +1,55 @@
-const { Product, Category } = require('../models');
+const { Product, Category } = require('../models/index.js');
 const { Op } = require('sequelize');
 
 const ProductController = {
-    async createProduct(req, res) {
+    createProduct(req, res) {
+        product
+            .create(req.body)
+            .then(product => {
+                product.addCategory(req.body.CategoryId);
+                res.send(product);
+            })
+            .catch(err => console.error(err));
+    },
+
+    async getAll(req, res) {
         try {
-            const { name, price, categoryId } = req.body;
-            const product = await Product.create({ name, price, categoryId });
-
-            const productWithCategory = await Product.findByPk(product.id, {
-                include: {
-                    model: Category,
-                    as: 'Category',
-                },
+            const products = await product.findAll({
+                include: [{ model: Category, through: { attributes: [] } }],
             });
-
-            res.status(201).json(productWithCategory);
+            res.send(products);
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error(error);
         }
     },
 
-    async updateProduct(req, res) {
+    async delete(req, res) {
         try {
-            const { name, price, categoryId } = req.body;
-            const product = await Product.findByPk(req.params.id);
-
-            if (!product)
-                return res.status(404).json({ error: 'Product not found' });
-
-            await product.update({ name, price });
-
-            if (categoryId) {
-                await product.update({ name, price, categoryId });
-            }
-
-            const productWithCategories = await Product.findByPk(product.id, {
-                include: {
-                    model: Category,
-                    as: 'Category',
-                },
+            await product.destroy({
+                where: { id: req.params.id },
             });
-
-            res.json(productWithCategories);
+            await CategoryProduct.destroy({
+                where: { ProductId: req.params.id },
+            });
+            res.send({ message: 'El producto ha sido eliminado' });
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.log(error);
         }
     },
 
-    async deleteProduct(req, res) {
+    async update(req, res) {
         try {
-            const product = await Product.findByPk(req.params.id);
-            if (!product)
-                return res.status(404).json({ error: 'Product not found' });
-
-            await product.destroy();
-            res.json({ message: 'Product deleted successfully' });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    },
-
-    async getAllProducts(req, res) {
-        try {
-            const { name, price, sort } = req.query;
-            const where = {};
-
-            if (name) where.name = { [Op.like]: `%${name}%` };
-            if (price) where.price = price;
-
-            const products = await Product.findAll({
-                where,
-                include: {
-                    model: Category,
-                    as: 'Category',
-                },
-                order:
-                    sort === 'desc'
-                        ? [['price', 'DESC']]
-                        : sort === 'asc'
-                        ? [['price', 'ASC']]
-                        : undefined,
+            await product.update(req.body, {
+                where: { id: req.params.id },
             });
-
-            res.json(products);
+            const product = await product.findByPk(req.params.id);
+            book.setCategories(req.body.CategoryId);
+            res.send('Producto actualizado con éxito');
         } catch (error) {
-            res.status(500).json({ error: error.message });
+            console.error(error);
+            res.status(500).send({
+                message: 'no ha sido posible actualizar el producto',
+            });
         }
     },
 

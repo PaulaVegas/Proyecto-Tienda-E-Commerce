@@ -4,9 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     class Product extends Model {
         static associate(models) {
             // Un producto pertenece a una categoría
-            Product.belongsTo(models.Category, {
-                foreignKey: 'categoryId',
-                as: 'Category',
+            Product.belongsToMany(models.Category, {
+               through: models.ProductCategory
             });
 
             // Un producto puede estar en muchos pedidos
