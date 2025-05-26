@@ -4,22 +4,17 @@ const { Op } = require('sequelize');
 const ProductController = {
     async createProduct(req, res) {
         try {
-            const { name, price, categoryIds } = req.body;
-            const product = await Product.create({ name, price });
+            const { name, price, categoryId } = req.body;
+            const product = await Product.create({ name, price, categoryId });
 
-            if (categoryIds && categoryIds.length > 0) {
-                await product.setCategories(categoryIds);
-            }
-
-            const productWithCategories = await Product.findByPk(product.id, {
+            const productWithCategory = await Product.findByPk(product.id, {
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
             });
 
-            res.status(201).json(product);
+            res.status(201).json(productWithCategory);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -27,7 +22,7 @@ const ProductController = {
 
     async updateProduct(req, res) {
         try {
-            const { name, price, categoryIds } = req.body;
+            const { name, price, categoryId } = req.body;
             const product = await Product.findByPk(req.params.id);
 
             if (!product)
@@ -35,19 +30,18 @@ const ProductController = {
 
             await product.update({ name, price });
 
-            if (categoryIds) {
-                await product.setCategories(categoryIds);
+            if (categoryId) {
+                await product.update({ name, price, categoryId });
             }
 
             const productWithCategories = await Product.findByPk(product.id, {
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
             });
 
-            res.json(product);
+            res.json(productWithCategories);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
@@ -71,15 +65,14 @@ const ProductController = {
             const { name, price, sort } = req.query;
             const where = {};
 
-            if (name) where.name = { [Op.iLike]: `%${name}%` };
-            if (price) where.price = price; // corregido price en vez de precio
+            if (name) where.name = { [Op.like]: `%${name}%` };
+            if (price) where.price = price;
 
             const products = await Product.findAll({
                 where,
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
                 order:
                     sort === 'desc'
@@ -95,34 +88,35 @@ const ProductController = {
         }
     },
 
-    async getProductById(req, res) {
+    async getById(req, res) {
         try {
             const product = await Product.findByPk(req.params.id, {
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
             });
 
-            if (!product)
-                return res.status(404).json({ error: 'Product not found' });
+            if (!product) {
+                return res
+                    .status(404)
+                    .send({ message: 'Producto no encontrado' });
+            }
 
             res.json(product);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ message: 'Error al buscar el producto' });
         }
     },
-
     async searchProductByName(req, res) {
         try {
             const { name } = req.params;
             const products = await Product.findAll({
-                where: { name: { [Op.iLike]: `%${name}%` } },
+                where: { name: { [Op.like]: `%${name}%` } },
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
             });
             res.json(products);
@@ -138,8 +132,7 @@ const ProductController = {
                 where: { price },
                 include: {
                     model: Category,
-                    as: 'categories',
-                    through: { attributes: [] },
+                    as: 'Category',
                 },
             });
             res.json(products);

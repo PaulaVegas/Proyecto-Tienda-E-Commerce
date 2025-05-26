@@ -1,4 +1,4 @@
-const { Category, Sequelize } = require('../models/index.js');
+const { Category, Product, Sequelize } = require('../models/index.js');
 const { Op } = Sequelize;
 
 const CategoryController = {
@@ -32,7 +32,23 @@ const CategoryController = {
         });
         res.send('La categoría ha sido eliminada con éxito');
     },
-
+    async getAllCategories(req, res) {
+        try {
+            const categories = await Category.findAll({
+                include: {
+                    model: Product,
+                    as: 'products', // coincide con el alias definido en Category.associate
+                },
+            });
+            res.status(200).json(categories);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Error fetching categories',
+                error: error.message,
+            });
+        }
+    },
     // Devolver categoría con id
     // ***** Cuando estén todos los productos creados, deberá traer también los productos asociados
     async getById(req, res) {

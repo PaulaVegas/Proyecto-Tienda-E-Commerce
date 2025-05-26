@@ -1,11 +1,12 @@
 {
     "development": {
-        "username": "root",
-        "password": "123456",
-        "database": "proyecto_ecommerce",
+        "username": "tu usuario",
+        "password": "tu constraseña",
+        "database": "nombre de la BBDD",
         "host": "localhost",
         "dialect": "mysql"
     },
+
     "test": {
         "username": "root",
         "password": null,
