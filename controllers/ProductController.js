@@ -6,7 +6,6 @@ const ProductController = {
         try {
             const { name, price, description, CategoryIds } = req.body;
 
-            // Crear el producto sin categoryId directo
             const newProduct = await Product.create({
                 name,
                 price,
@@ -14,15 +13,13 @@ const ProductController = {
             });
 
             if (CategoryIds && CategoryIds.length > 0) {
-                // Buscar las categorías existentes
                 const categories = await Category.findAll({
                     where: { id: CategoryIds },
                 });
-                // Agregar categorías al producto (tabla intermedia)
+
                 await newProduct.addCategories(categories);
             }
 
-            // Traer producto con categorías para responder
             const productWithCategories = await Product.findByPk(
                 newProduct.id,
                 {
