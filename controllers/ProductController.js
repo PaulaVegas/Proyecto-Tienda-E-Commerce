@@ -2,13 +2,43 @@ const { Product, Category, ProductCategory } = require('../models/index.js');
 const { Op } = require('sequelize');
 
 const ProductController = {
-    createProduct(req, res) {
-        Product.create(req.body)
-            .then(Product => {
-                Product.addCategory(req.body.CategoryId);
-                res.send(Product);
-            })
-            .catch(err => console.error(err));
+    createProduct: async (req, res) => {
+        try {
+            const { name, price, description, CategoryIds } = req.body;
+
+            // Crear el producto sin categoryId directo
+            const newProduct = await Product.create({
+                name,
+                price,
+                description,
+            });
+
+            if (CategoryIds && CategoryIds.length > 0) {
+                // Buscar las categorías existentes
+                const categories = await Category.findAll({
+                    where: { id: CategoryIds },
+                });
+                // Agregar categorías al producto (tabla intermedia)
+                await newProduct.addCategories(categories);
+            }
+
+            // Traer producto con categorías para responder
+            const productWithCategories = await Product.findByPk(
+                newProduct.id,
+                {
+                    include: Category,
+                    through: { attributes: [] },
+                }
+            );
+
+            res.status(201).json(productWithCategories);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Error al crear el producto',
+                error: error.message,
+            });
+        }
     },
 
     async getAll(req, res) {
@@ -16,6 +46,7 @@ const ProductController = {
             const products = await Product.findAll({
                 include: [{ model: Category, through: { attributes: [] } }],
             });
+            console.log(JSON.stringify(products, null, 2));
             res.send(products);
         } catch (error) {
             console.error(error);
@@ -38,36 +69,54 @@ const ProductController = {
 
     async update(req, res) {
         try {
-            await Product.update(req.body, {
-                where: { id: req.params.id },
-            });
-            const Product = await product.findByPk(req.params.id);
-            Product.setCategories(req.body.CategoryId);
+            const productId = req.params.id;
+            const { name, price, description, CategoryIds } = req.body;
+
+            await Product.update(
+                { name, price, description },
+                { where: { id: productId } }
+            );
+
+            const product = await Product.findByPk(productId);
+            if (!product) {
+                return res
+                    .status(404)
+                    .send({ message: 'Producto no encontrado' });
+            }
+
+            if (CategoryIds && Array.isArray(CategoryIds)) {
+                const categories = await Category.findAll({
+                    where: { id: CategoryIds },
+                });
+                await product.setCategories(categories);
+            }
+
             res.send('Producto actualizado con éxito');
         } catch (error) {
             console.error(error);
             res.status(500).send({
                 message: 'no ha sido posible actualizar el producto',
+                error: error.message,
             });
         }
     },
 
     async getById(req, res) {
         try {
-            const Product = await Product.findByPk(req.params.id, {
+            const product = await Product.findByPk(req.params.id, {
                 include: {
                     model: Category,
-                    as: 'Category',
+                    through: { attributes: [] },
                 },
             });
 
-            if (!Product) {
+            if (!product) {
                 return res
                     .status(404)
                     .send({ message: 'Producto no encontrado' });
             }
 
-            res.json(Product);
+            res.json(product);
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: 'Error al buscar el producto' });
@@ -80,7 +129,6 @@ const ProductController = {
                 where: { name: { [Op.like]: `%${name}%` } },
                 include: {
                     model: Category,
-                    as: 'Category',
                 },
             });
             res.json(products);
@@ -96,7 +144,21 @@ const ProductController = {
                 where: { price },
                 include: {
                     model: Category,
-                    as: 'Category',
+                    through: { attributes: [] },
+                },
+            });
+            res.json(products);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+    async orderByPriceDesc(req, res) {
+        try {
+            const products = await Product.findAll({
+                order: [['price', 'DESC']],
+                include: {
+                    model: Category,
+                    through: { attributes: [] },
                 },
             });
             res.json(products);

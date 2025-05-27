@@ -1,19 +1,19 @@
 # 🛒 Proyecto E-Commerce API
 
-Backend de una tienda online con autenticación, relaciones entre tablas y gestión de datos con Sequelize + MySQL.
+Backend de una tienda online, desarrollada con Node.js, Express y Sequelize (MySQL). Esta API REST incluye autenticación segura, gestión de usuarios, productos, categorías, pedidos y reseñas, con relaciones avanzadas entre tablas y protección mediante roles.
 
 ---
 
 ## 📌 Introducción
 
-En el proyecto de backend se combinan los conocimientos adquiridos en Node.js y Express, junto con MySQL y Sequelize para la gestión de bases de datos relacionales.
+Este proyecto aplica conocimientos de desarrollo backend con Node.js y Express, junto con Sequelize y MySQL para la gestión de bases de datos relacionales.
 
-El objetivo es desarrollar una API REST para una tienda online (e-commerce), donde se gestionen usuarios, productos, categorías y pedidos, incluyendo la implementación de autenticación y relaciones entre tablas.
+El objetivo es construir una API REST para una tienda online (e-commerce) que permita registrar usuarios, gestionar productos y categorías, procesar pedidos, añadir reseñas y manejar autenticación y autorización mediante JWT y roles.
 
 -   🐢 **Node.js + Express**
 -   🐬 **MySQL** gestionado con **Sequelize**
 
---- 
+---
 
 ## 🧩 Descripción del proyecto
 
@@ -29,9 +29,15 @@ API REST capaz de siguiente:
 
 ## 💥 Requisitos imprescindibles del proyecto:
 
--   Uso de _ramas_ con git, cuando se termine el proyecto deberán quedar dos ramas la `master o main` y la `develop`.
+✅ Uso de ramas Git: deben mantenerse main y develop.
 
---- 
+✅ Repositorio público con commits significativos.
+
+✅ README completo y profesional.
+
+✅ Diagrama ER para explicar relaciones entre entidades (presentación).
+
+---
 
 ## 🛠️ Tecnologías
 
@@ -55,30 +61,30 @@ API REST capaz de siguiente:
 
 ## 📂 Estructura del Proyecto
 
-- `/config`  
-  Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
+-   `/config`  
+    Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
 
-- `/controllers`  
-  Incluye la lógica de negocio para los distintos recursos (productos, categorías, usuarios, pedidos, etc.). Los controladores manejan las solicitudes entrantes, interactúan con los modelos y devuelven respuestas.
+-   `/controllers`  
+    Incluye la lógica de negocio para los distintos recursos (productos, categorías, usuarios, pedidos, etc.). Los controladores manejan las solicitudes entrantes, interactúan con los modelos y devuelven respuestas.
 
-- `/models`  
-  Define los modelos Sequelize que representan las tablas de la base de datos y sus relaciones. Aquí se encuentran las definiciones de los esquemas y las asociaciones entre tablas (relaciones One-to-Many, Many-to-Many).
+-   `/models`  
+    Define los modelos Sequelize que representan las tablas de la base de datos y sus relaciones. Aquí se encuentran las definiciones de los esquemas y las asociaciones entre tablas (relaciones One-to-Many, Many-to-Many).
 
-- `/routes`  
-  Define las rutas de la API REST. Cada archivo aquí expone endpoints para un recurso específico y conecta esas rutas con su controlador correspondiente.
+-   `/routes`  
+    Define las rutas de la API REST. Cada archivo aquí expone endpoints para un recurso específico y conecta esas rutas con su controlador correspondiente.
 
-- `/seeders`  
-  Contiene los scripts para insertar datos iniciales o de prueba en la base de datos. Estos seeders permiten popular las tablas con información que facilite el desarrollo y las pruebas.
+-   `/seeders`  
+    Contiene los scripts para insertar datos iniciales o de prueba en la base de datos. Estos seeders permiten popular las tablas con información que facilite el desarrollo y las pruebas.
 
 ### Archivos raíz
 
-- `index.js`  
-  Archivo principal que arranca el servidor Express y conecta toda la configuración, rutas y middleware necesarios para la aplicación.
+-   `index.js`  
+    Archivo principal que arranca el servidor Express y conecta toda la configuración, rutas y middleware necesarios para la aplicación.
 
-- `README.md`  
-  Documento que describe el proyecto, cómo instalarlo, configurarlo y usarlo. Es la guía principal para cualquier persona que quiera entender o colaborar con el proyecto.
+-   `README.md`  
+    Documento que describe el proyecto, cómo instalarlo, configurarlo y usarlo. Es la guía principal para cualquier persona que quiera entender o colaborar con el proyecto.
 
---- 
+---
 
 # 🚀 Cómo ejecutar el proyecto
 
@@ -98,7 +104,8 @@ npm install -D nodemon
 npm install express sequelize mysql2
 ```
 
-- Ingresa tus datos de MySql en ***config.json*** para poder crear la db
+-   Ingresa tus datos de MySql en **_config.json_** para poder crear la db
+
 ```js
 "development": {
         "username": "tu usuario",
@@ -109,25 +116,33 @@ npm install express sequelize mysql2
     }
 ```
 
-- Crea la db mediante terminal
+-   Crea la db mediante terminal
+
 ```bash
 sequelize db:create
-  ``` 
+```
 
-- Realiza las migraciones de tablas
+-   Realiza las migraciones de tablas
+
 ```bash
 sequelize db:migrate
 ```
 
-- Usa los seeders para popular las tablas
+-   Usa los seeders para popular las tablas
+
 ```bash
 sequelize db:seed:all
 ```
 
-- Inicia el servidor
+-   Inicia el servidor
+
 ```bash
 npm run dev
 ```
+
+📈 Mejora continua
+
+Diagrama de relaciones entre tablas
 
 ## 👨‍💻 Autoras
 
