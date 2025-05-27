@@ -1,0 +1,24 @@
+{
+    "development": {
+        "username": "tu usuario",
+        "password": "tu constraseña",
+        "database": "nombre de la BBDD",
+        "host": "localhost",
+        "dialect": "mysql"
+    },
+
+    "test": {
+        "username": "root",
+        "password": null,
+        "database": "database_test",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    },
+    "production": {
+        "mysql -u root -pusername": "root",
+        "password": null,
+        "database": "database_production",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    }
+}
