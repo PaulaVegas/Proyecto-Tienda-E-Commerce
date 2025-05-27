@@ -37,7 +37,7 @@ const CategoryController = {
             const categories = await Category.findAll({
                 include: {
                     model: Product,
-                    as: 'products', // coincide con el alias definido en Category.associate
+                    as: 'Products',
                 },
             });
             res.status(200).json(categories);
@@ -74,7 +74,10 @@ const CategoryController = {
                     [Op.like]: `%${req.params.name}%`,
                 },
             },
-            // include: [Product], para cuando esté product creado
+            include: {
+                model: Product,
+                as: 'Products',
+            },
         }).then(category => res.send(category));
     },
 };

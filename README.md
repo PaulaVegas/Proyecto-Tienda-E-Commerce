@@ -2,6 +2,8 @@
 
 Backend de una tienda online con autenticación, relaciones entre tablas y gestión de datos con Sequelize + MySQL.
 
+---
+
 ## 📌 Introducción
 
 En el proyecto de backend se combinan los conocimientos adquiridos en Node.js y Express, junto con MySQL y Sequelize para la gestión de bases de datos relacionales.
@@ -10,6 +12,8 @@ El objetivo es desarrollar una API REST para una tienda online (e-commerce), don
 
 -   🐢 **Node.js + Express**
 -   🐬 **MySQL** gestionado con **Sequelize**
+
+--- 
 
 ## 🧩 Descripción del proyecto
 
@@ -21,9 +25,13 @@ API REST capaz de siguiente:
 -   🔗 Al menos una relación Many to Many y otra One to Many.
 -   🌱 Utilización de seeders
 
+---
+
 ## 💥 Requisitos imprescindibles del proyecto:
 
 -   Uso de _ramas_ con git, cuando se termine el proyecto deberán quedar dos ramas la `master o main` y la `develop`.
+
+--- 
 
 ## 🛠️ Tecnologías
 
@@ -43,6 +51,8 @@ API REST capaz de siguiente:
 -   Será requisito indispensable que el repositorio disponga de un Readme
     completo.
 
+---
+
 ## 📂 Estructura del Proyecto
 
 /config
@@ -52,6 +62,8 @@ API REST capaz de siguiente:
 /seeders
 index.js
 README.md
+
+--- 
 
 # 🚀 Cómo ejecutar el proyecto
 
@@ -71,8 +83,33 @@ npm install -D nodemon
 npm install express sequelize mysql2
 ```
 
--   Inicia el servidor
+- Ingresa tus datos de MySql en ***config.json*** para poder crear la db
+```js
+"development": {
+        "username": "tu usuario",
+        "password": "tu constraseña",
+        "database": "nombre de la BBDD",
+        "host": "localhost",
+        "dialect": "mysql"
+    }
+```
 
+- Crea la db mediante terminal
+```bash
+sequelize db:create
+  ``` 
+
+- Realiza las migraciones de tablas
+```bash
+sequelize db:migrate
+```
+
+- Usa los seeders para popular las tablas
+```bash
+sequelize db:seed:all
+```
+
+- Inicia el servidor
 ```bash
 npm run dev
 ```
