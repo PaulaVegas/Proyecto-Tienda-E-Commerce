@@ -11,11 +11,9 @@ El objetivo es desarrollar una API REST para una tienda online (e-commerce), don
 -   🐢 **Node.js + Express**
 -   🐬 **MySQL** gestionado con **Sequelize**
 
-Además, el alumno deberá presentar y defender un diagrama **diagrama relacional** que explique las relaciones entre las tablas del proyecto.
-
 ## 🧩 Descripción del proyecto
 
-Una vez analizadas las necesidades del proyecto, se espera que el alumno desarrolle una API REST que sea capaz de lo siguiente:
+API REST capaz de siguiente:
 
 -   🔐 Registro de usuarios usando Bcrypt.
 -   🛡️ Login de usuarios + token + middleware.
@@ -26,7 +24,6 @@ Una vez analizadas las necesidades del proyecto, se espera que el alumno desarro
 ## 💥 Requisitos imprescindibles del proyecto:
 
 -   Uso de _ramas_ con git, cuando se termine el proyecto deberán quedar dos ramas la `master o main` y la `develop`.
--   Presentación de README **excelente**.
 
 ## 🛠️ Tecnologías
 
