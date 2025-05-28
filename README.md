@@ -61,6 +61,29 @@ API REST capaz de siguiente:
 
 ## 📂 Estructura del Proyecto
 
+- `/config`  
+  Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
+
+- `/controllers`  
+  Incluye la lógica de negocio para los distintos recursos (productos, categorías, usuarios, pedidos, etc.). Los controladores manejan las solicitudes entrantes, interactúan con los modelos y devuelven respuestas.
+
+- `/models`  
+  Define los modelos Sequelize que representan las tablas de la base de datos y sus relaciones. Aquí se encuentran las definiciones de los esquemas y las asociaciones entre tablas (relaciones One-to-Many, Many-to-Many).
+
+- `/routes`  
+  Define las rutas de la API REST. Cada archivo aquí expone endpoints para un recurso específico y conecta esas rutas con su controlador correspondiente.
+
+- `/seeders`  
+  Contiene los scripts para insertar datos iniciales o de prueba en la base de datos. Estos seeders permiten popular las tablas con información que facilite el desarrollo y las pruebas.
+
+### Archivos raíz
+
+- `index.js`  
+  Archivo principal que arranca el servidor Express y conecta toda la configuración, rutas y middleware necesarios para la aplicación.
+
+- `README.md`  
+  Documento que describe el proyecto, cómo instalarlo, configurarlo y usarlo. Es la guía principal para cualquier persona que quiera entender o colaborar con el proyecto.
+=======
 -   `/config`  
     Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
 
@@ -80,6 +103,7 @@ API REST capaz de siguiente:
 
 -   `index.js`  
     Archivo principal que arranca el servidor Express y conecta toda la configuración, rutas y middleware necesarios para la aplicación.
+
 
 -   `README.md`  
     Documento que describe el proyecto, cómo instalarlo, configurarlo y usarlo. Es la guía principal para cualquier persona que quiera entender o colaborar con el proyecto.
