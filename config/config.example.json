@@ -4,7 +4,8 @@
         "password": "tu constraseña",
         "database": "nombre de la BBDD",
         "host": "localhost",
-        "dialect": "mysql"
+        "dialect": "mysql",
+        "jwt_secret": "algo"
     },
 
     "test": {

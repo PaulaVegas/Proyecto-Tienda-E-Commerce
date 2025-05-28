@@ -13,11 +13,14 @@
 |------------|----------------------------------------------------------|---------|
 | 27/05/2025 | Crear modelo de `Category` con validaciones básicas      | ✅ Hecho |
 | 27/05/2025 | Crear las tabla intermedia ProductCategory con relaciones| ✅ Hecho |
-| /05/2025 | Crear las rutas CRUD para categorías                     | ⏳ En curso |
-| /05/2025 | Agregar filtros por nombre                               | ⏳ En curso |
-| /05/2025 | Crear relación con `Product` (Many-to-Many)              | ⏳ En curso|
-| /05/2025 | Crear endpoint para ver categorías con productos         | ⏳ En curso |
-| /05/2025 | Crear seeder con 5 categorías                            | ⏳ En curso|
+| 27/05/2025 | Crear las rutas CRUD para categorías                     | ✅ Hecho |
+| 27/05/2025 | Agregar filtros por nombre                               | ✅ Hecho |
+| 27/05/2025 | Crear relación con `Product` (Many-to-Many)              | ✅ Hecho |
+| 27/05/2025 | Crear endpoint para ver categorías con productos         | ✅ Hecho |
+| 27/05/2025 | Crear seeder con 5 categorías                            | ✅ Hecho |
+| 27/05/2025 | Crear seeder con 5 categorías                            | ✅ Hecho |
+| /05/2025 | Crear controlador de usuario                           | ⏳ En curso |
+| /05/2025 | Implementar bcrypt para usuarios                        | ⏳ En curso |
 | /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
