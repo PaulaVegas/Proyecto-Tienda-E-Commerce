@@ -1,4 +1,4 @@
-# 📒 Bitácora de Desarrollo – Módulo de Categorías y Seeders
+# 📒 Bitácora de Desarrollo – Módulo de Categorías, Usuarios y Seeders
 
 ### 🧑‍💻 Alumno: [Paula]  
 ### 🗓️ Proyecto: E-commerce (API REST con Node, Express, Sequelize y MySQL)  
@@ -21,13 +21,15 @@
 | 27/05/2025 | Crear seeder con 5 categorías                            | ✅ Hecho |
 | /05/2025 | Crear controlador de usuario                           | ⏳ En curso |
 | /05/2025 | Implementar bcrypt para usuarios                        | ⏳ En curso |
+| 27/05/2025 | CRUD de users        | ⏳ En curso |
 | /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
 
 ## 🛠️ Desarrollo de funcionalidades
 
-### 1. 🧱 Modelo Category
+### 1 MODELOS
+### 1.1 🧱 Modelo Category
 
 ```js
 // models/Category.js
@@ -56,7 +58,9 @@ module.exports = (sequelize, DataTypes) => {
     return Category;
 };
 ```
-🧱 Modelo Category
+### 1.2 🧱 Modelo Users
+
+
 
 ### 2. 🔁 Relación Many-to-Many con Product
 Se definió la relación many-to-many entre Product y Category usando una tabla intermedia llamada ProductCategories.
@@ -141,6 +145,7 @@ Probado con Postman:
 
 - ✔ `/categories` devuelve todas con productos.
 - ✔ CRUD completo probado y funcional. 
+- X `/users` devuelve todos con sus pedidos.
 
 ---
 
@@ -148,11 +153,14 @@ Probado con Postman:
 
 - El modelo `Product` no tenía aún relación definida al principio, por lo que tuve que esperar a su implementación para probar correctamente las asociaciones.
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
+- Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
 
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
-
+- Conectar los modelos de usuarios y pedidos
+- Testear todos los endpoints
+  
 ---
 
 

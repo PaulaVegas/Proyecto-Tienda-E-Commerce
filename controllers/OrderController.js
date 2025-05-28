@@ -1,4 +1,4 @@
-const { Order, Product } = require('../models');
+const { Order, Product, User } = require('../models');
 
 const OrderController = {
     async getOrdersWithProducts(req, res) {
@@ -23,7 +23,10 @@ const OrderController = {
         try {
             const { customerName, products } = req.body;
 
-            const newOrder = await Order.create({ customerName });
+            const newOrder = await Order.create({
+                customerName,
+                UserId: req.user.id,
+            });
 
             if (products && products.length > 0) {
                 const productIds = products.map(p => p.productId);
@@ -41,7 +44,10 @@ const OrderController = {
                 },
             });
 
-            res.status(201).json(orderWithProducts);
+            res.status(201).json({
+                message: 'Pedido creado con éxito',
+                orderWithProducts,
+            });
         } catch (error) {
             console.error(error);
             res.status(500).json({
