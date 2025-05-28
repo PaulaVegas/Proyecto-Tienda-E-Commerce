@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/PaulaVegas/Proyecto-Tienda-E-Commerce#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
   },
