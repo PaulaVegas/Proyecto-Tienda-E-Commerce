@@ -59,13 +59,94 @@ module.exports = (sequelize, DataTypes) => {
 };
 ```
 ### 1.2 🧱 Modelo Users
+```js
+'use strict';
+const { Model } = require('sequelize');
 
+module.exports = (sequelize, DataTypes) => {
+    class User extends Model {
+        static associate(models) {
+            // Un usuario tiene muchos pedidos (Orders)
+            User.hasMany(models.Order, {
+                foreignKey: 'UserId',
+                as: 'orders',
+            });
 
+            // Un usuario puede tener muchos tokens (por ejemplo, para sesiones)
+            User.hasMany(models.Token, {
+                foreignKey: 'UserId',
+                as: 'tokens',
+            });
+        }
+    }
 
-### 2. 🔁 Relación Many-to-Many con Product
-Se definió la relación many-to-many entre Product y Category usando una tabla intermedia llamada ProductCategories.
+    User.init(
+        {
+            username: DataTypes.STRING,
+            email: DataTypes.STRING,
+            password: DataTypes.STRING,
+        },
+        {
+            sequelize,
+            modelName: 'User',
+        }
+    );
 
-En el modelo Product.js también se definió la relación inversa.
+    return User;
+};
+```
+---
+
+### 2. 🔁 Relaciones
+#### Producto y Categoría: relación many-to-many vía ProductCategories.
+
+Un producto puede pertenecer a varias categorías y una categoría puede tener varios productos.
+
+En una tienda, un producto puede ser categorizado de distintas maneras. Por ejemplo, un libro puede estar en la categoría "Libros" pero también en "Ofertas".
+
+Una categoría "Libros" contendrá muchos productos diferentes.
+
+Esto implica que la relación no es uno a uno ni uno a muchos, sino muchos a muchos.
+
+Para representarlo en la base de datos se usa una tabla intermedia (join table) llamada ProductCategories con referencias a ambas tablas.
+
+#### Producto y Order: relación many-to-many vía OrderProducts.
+Un pedido (order) puede contener varios productos y un producto puede estar en varios pedidos.
+
+Un pedido normalmente contiene uno o varios productos (ejemplo: compras de varios artículos en la misma orden).
+
+Un producto puede ser comprado en muchas órdenes diferentes por distintos clientes.
+
+Por eso, esta es otra relación muchos a muchos.
+
+Se modela con una tabla intermedia OrderProducts que asocia productos y pedidos, además usualmente almacenando la cantidad y precio del producto en el pedido.
+
+#### Order y Usuario: relación muchos a uno (un usuario tiene muchas órdenes).
+Un usuario puede hacer muchos pedidos, pero cada pedido pertenece a un solo usuario.
+
+Cada pedido está hecho por un único cliente (usuario) que realizó la compra.
+
+Un usuario puede tener historial de múltiples pedidos a lo largo del tiempo.
+
+Esto es una relación uno a muchos:
+
+Uno (usuario) → muchos (pedidos)
+
+Se guarda la clave foránea UserId en la tabla Orders.
+#### Usuario y Token: relación uno a muchos.
+Un usuario puede tener muchos tokens (por ejemplo, para sesiones o autenticación).
+
+Los tokens se usan para controlar sesiones, autenticación, refresco de sesión, etc.
+
+Un usuario puede iniciar sesión en varios dispositivos, generando varios tokens activos.
+
+Esta es una relación uno a muchos:
+
+Uno (usuario) → muchos (tokens)
+
+Se guarda la clave foránea UserId en la tabla Tokens.
+
+--- 
 
 ### 3. 🚦 Endpoints implementados
 ```js
@@ -77,8 +158,11 @@ router.delete('/:id', CategoryController.delete); // Borrar categoría
 router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por nombre
 ```
 
+---
+
 ### 4. 🌱 Seeders
-Seeder para insertar 5 categorías:
+Seeder para insertar categorías, products, etc:
+Ejemplo:
 
 ```js
 'use strict';
@@ -130,6 +214,7 @@ module.exports = {
         return queryInterface.bulkDelete('Categories', null, {});
     },
 };
+
 ```
 
 Ejecutado con:
@@ -137,7 +222,8 @@ Ejecutado con:
 ```bash
 npx sequelize-cli db:seed:all
 ```
-También añadido seeder de productos y de productcategories
+
+---
 
 ## 🧪 Testeo de endpoints
 
@@ -154,7 +240,8 @@ Probado con Postman:
 - El modelo `Product` no tenía aún relación definida al principio, por lo que tuve que esperar a su implementación para probar correctamente las asociaciones.
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
 - Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
-
+- Las relaciones y migraciones estaban mal establecidas.
+  
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
