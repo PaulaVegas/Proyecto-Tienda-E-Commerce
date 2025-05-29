@@ -259,4 +259,4 @@ Probado con Postman:
 | 27/05/2025  |   `feat: working intermediate ProductCategory table with correct interrelations`| feature/categories   |
 | 27/05/2025  |     `feat: seeders added `     | feature/categories  |
 | 27/05/2025  | `feat: seeder de categorías`                 | feature/categories  |
-| 29/05/2025  | `feat: fixed migrations and models`                 | develop |
+| 29/05/2025  | `feat: fixed migrations and models`                 | feature/userauth |
