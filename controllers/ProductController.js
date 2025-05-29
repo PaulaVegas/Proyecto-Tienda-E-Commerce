@@ -1,4 +1,10 @@
-const { Product, Category, ProductCategory } = require('../models/index.js');
+const {
+    Product,
+    Category,
+    ProductCategory,
+    Review,
+    User,
+} = require('../models/index.js');
 const { Op } = require('sequelize');
 
 const ProductController = {
@@ -41,12 +47,33 @@ const ProductController = {
     async getAll(req, res) {
         try {
             const products = await Product.findAll({
-                include: [{ model: Category, through: { attributes: [] } }],
+                include: [
+                    {
+                        model: Category,
+                        as: 'categories',
+                        through: { attributes: [] },
+                    },
+                    {
+                        model: Review,
+                        as: 'reviews',
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['id', 'username', 'email'],
+                            },
+                        ],
+                    },
+                ],
             });
             console.log(JSON.stringify(products, null, 2));
             res.send(products);
         } catch (error) {
             console.error(error);
+            res.status(500).json({
+                message: 'Error al obtener los productos',
+                error: error.message,
+            });
         }
     },
 
@@ -61,6 +88,7 @@ const ProductController = {
             res.send({ message: 'El producto ha sido eliminado' });
         } catch (error) {
             console.log(error);
+            res.status(500).send({ message: 'Error al eliminar el producto' });
         }
     },
 
@@ -92,7 +120,7 @@ const ProductController = {
         } catch (error) {
             console.error(error);
             res.status(500).send({
-                message: 'no ha sido posible actualizar el producto',
+                message: 'No ha sido posible actualizar el producto',
                 error: error.message,
             });
         }
@@ -101,10 +129,24 @@ const ProductController = {
     async getById(req, res) {
         try {
             const product = await Product.findByPk(req.params.id, {
-                include: {
-                    model: Category,
-                    through: { attributes: [] },
-                },
+                include: [
+                    {
+                        model: Category,
+                        as: 'categories',
+                        through: { attributes: [] },
+                    },
+                    {
+                        model: Review,
+                        as: 'reviews',
+                        include: [
+                            {
+                                model: User,
+                                as: 'user',
+                                attributes: ['id', 'username', 'email'],
+                            },
+                        ],
+                    },
+                ],
             });
 
             if (!product) {
@@ -119,6 +161,7 @@ const ProductController = {
             res.status(500).send({ message: 'Error al buscar el producto' });
         }
     },
+
     async searchProductByName(req, res) {
         try {
             const { name } = req.params;
@@ -149,6 +192,7 @@ const ProductController = {
             res.status(500).json({ error: error.message });
         }
     },
+
     async orderByPriceDesc(req, res) {
         try {
             const products = await Product.findAll({

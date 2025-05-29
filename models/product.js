@@ -9,15 +9,21 @@ module.exports = (sequelize, DataTypes) => {
                 through: 'ProductCategories',
                 foreignKey: 'ProductId',
                 otherKey: 'CategoryId',
-                as: 'categories', // alias para la relación, opcional pero recomendable
+                as: 'categories', // alias opcional
             });
 
-            // Relación con Order a través de OrderProducts
+            // Relación many-to-many con Order mediante OrderProducts
             Product.belongsToMany(models.Order, {
                 through: 'OrderProducts',
                 foreignKey: 'ProductId',
                 otherKey: 'OrderId',
                 as: 'orders',
+            });
+
+            // Relación one-to-many con Review
+            Product.hasMany(models.Review, {
+                foreignKey: 'ProductId',
+                as: 'reviews',
             });
         }
     }
