@@ -6,6 +6,7 @@ const { authentication, isAdmin } = require('../middlewares/authentication');
 router.post('/', authentication, isAdmin, ProductController.createProduct);
 router.put('/:id', authentication, isAdmin, ProductController.update);
 router.delete('/:id', authentication, isAdmin, ProductController.delete);
+
 router.get('/', ProductController.getAll);
 router.get('/search/name/:name', ProductController.searchProductByName);
 router.get('/search/price/:price', ProductController.searchProductByPrice);
