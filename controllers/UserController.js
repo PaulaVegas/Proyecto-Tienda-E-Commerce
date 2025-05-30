@@ -35,7 +35,7 @@ const UserController = {
                 attributes: { exclude: ['password'] },
                 include: [
                     {
-                        model: models.Review,
+                        model: Review,
                         as: 'reviews',
                         attributes: ['id', 'content', 'rating'],
                     },

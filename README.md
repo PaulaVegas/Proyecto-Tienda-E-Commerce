@@ -156,7 +156,7 @@ npm run dev
 ## Screenshots
 ![Endpoints con Postman](../Proyecto-Tienda-E-Commerce/assets/categories/endpoint_allCategoriesWithProduct.png)
 
-![Endpoints con Postman](../Proyecto-Tienda-E-Commerce/assets/users/endpoint_loginUser.png)
+![Endpoints con Postman](../Proyecto-Tienda-E-Commerce/assets/users/endpoint_getUsers.png)
 
   
 ## 👨‍💻 Autoras
