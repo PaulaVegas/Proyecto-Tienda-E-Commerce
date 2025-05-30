@@ -58,7 +58,7 @@ API REST capaz de siguiente:
   Contiene diversas capturas de pantalla que muestran el bd schema y los endpoints testados en postman.
 
 - `/bitacora`
-Bitácora de desarrollo del proyecto.
+  Bitácora de desarrollo del proyecto.
 
 - `/config`  
   Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
@@ -67,7 +67,7 @@ Bitácora de desarrollo del proyecto.
   Incluye la lógica de negocio para los distintos recursos (productos, categorías, usuarios, pedidos, etc.). Los controladores manejan las solicitudes entrantes, interactúan con los modelos y devuelven respuestas.
 
 - `/middlewares`
-Para verificación de niveles de acceso y autenticación.
+  Para verificación de niveles de acceso y autenticación.
 
 - `/migrations`
   Con todas las migraciones necesarias para tener nuestra db creada de forma correcta.
