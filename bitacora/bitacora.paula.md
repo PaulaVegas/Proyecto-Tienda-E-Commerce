@@ -161,7 +161,7 @@ router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por
 ---
 
 ### 4. 🌱 Seeders
-Seeder para insertar categorías, products, etc:
+Seeder para insertar categorías, products, users:
 Ejemplo:
 
 ```js
