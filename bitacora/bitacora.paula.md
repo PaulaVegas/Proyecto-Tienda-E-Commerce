@@ -22,6 +22,7 @@
 | 30/05/2025 | Crear controlador de usuario                           | ✅ Hecho|
 | 30/05/2025 | Implementar bcrypt para usuarios                        | ✅ Hecho |
 | 30/05/2025 | CRUD de users        | ✅ Hecho |
+| 30/05/2025 | Implementación de multer    | ✅ Hecho |
 | /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
