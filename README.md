@@ -54,12 +54,23 @@ API REST capaz de siguiente:
 ---
 
 ### 📂 Estructura del Proyecto
+- `/assets`
+  Contiene diversas capturas de pantalla que muestran el bd schema y los endpoints testados en postman.
+
+- `/bitacora`
+  Bitácora de desarrollo del proyecto.
 
 - `/config`  
   Contiene la configuración de la base de datos y otros ajustes globales. Aquí encontrarás el archivo `config.json` donde se definen las credenciales para las diferentes bases de datos (desarrollo, test, producción).
 
 - `/controllers`  
   Incluye la lógica de negocio para los distintos recursos (productos, categorías, usuarios, pedidos, etc.). Los controladores manejan las solicitudes entrantes, interactúan con los modelos y devuelven respuestas.
+
+- `/middlewares`
+  Para verificación de niveles de acceso y autenticación.
+
+- `/migrations`
+  Con todas las migraciones necesarias para tener nuestra db creada de forma correcta.
 
 - `/models`  
   Define los modelos Sequelize que representan las tablas de la base de datos y sus relaciones. Aquí se encuentran las definiciones de los esquemas y las asociaciones entre tablas (relaciones One-to-Many, Many-to-Many).
@@ -138,13 +149,18 @@ sequelize db:seed:all
 npm run dev
 ```
 
-- Prueba con Postman
+- Prueba con Postman los endpoints.
   
+---
 
+## Screenshots
+![Endpoints con Postman](../Proyecto-Tienda-E-Commerce/assets/categories/endpoint_allCategoriesWithProduct.png)
+
+![Endpoints con Postman](../Proyecto-Tienda-E-Commerce/assets/users/endpoint_getUsers.png)
+
+  
 ## 👨‍💻 Autoras
 
--   ✍️ Maider
--   🐙 [@Maiderspb](https://www.github.com/Maiderspb)
+-   ✍️ Maider 🐙 [@Maiderspb](https://www.github.com/Maiderspb)
 
--   ✍️ Paula
--   🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
+-   ✍️ Paula  🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)

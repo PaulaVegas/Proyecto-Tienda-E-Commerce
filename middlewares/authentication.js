@@ -8,6 +8,9 @@ const authentication = async (req, res, next) => {
         const token = req.headers.authorization;
         const payload = jwt.verify(token, jwt_secret);
         const user = await User.findByPk(payload.id);
+        if (!user) {
+            return res.status(404).send({ message: 'Usuario no encontrado' });
+        }
         const tokenFound = await Token.findOne({
             where: { [Op.and]: [{ UserId: user.id }, { token: token }] },
         });
@@ -15,6 +18,7 @@ const authentication = async (req, res, next) => {
             return res.status(401).send({ message: 'No estas autorizado' });
         }
         req.user = user;
+        req.token = token;
         next();
     } catch (error) {
         console.log(error);

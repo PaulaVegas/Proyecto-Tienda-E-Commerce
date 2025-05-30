@@ -35,7 +35,7 @@ const UserController = {
                 attributes: { exclude: ['password'] },
                 include: [
                     {
-                        model: models.Review,
+                        model: Review,
                         as: 'reviews',
                         attributes: ['id', 'content', 'rating'],
                     },
@@ -117,6 +117,12 @@ const UserController = {
     },
     async logout(req, res) {
         try {
+            console.log('Logout de usuario', req.user);
+            if (!req.user) {
+                return res
+                    .status(401)
+                    .json({ message: 'Usuario no encontrado' });
+            }
             await Token.destroy({
                 where: {
                     [Op.and]: [
@@ -129,7 +135,7 @@ const UserController = {
         } catch (error) {
             console.log(error);
             res.status(500).send({
-                message: 'hubo un problema al tratar de desconectarte',
+                message: 'Hubo un problema al tratar de desconectarte',
             });
         }
     },
