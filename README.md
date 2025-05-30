@@ -114,6 +114,7 @@ npm install bcryptjs jsonwebtoken
         "database": "nombre de la BBDD",
         "host": "localhost",
         "dialect": "mysql"
+        "jwt_secret": "________"
     }
 ```
 
@@ -124,7 +125,7 @@ sequelize db:create
 
 - Realiza las migraciones de tablas
 ```bash
-sequelize db:migrate
+sequelize-cli db:migrate
 ```
 
 - Usa los seeders para popular las tablas

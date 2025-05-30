@@ -6,6 +6,7 @@ const OrderController = {
             const orders = await Order.findAll({
                 include: {
                     model: Product,
+                    as: 'products',
                     through: { attributes: [] },
                 },
             });
@@ -33,7 +34,11 @@ const OrderController = {
                 const foundProducts = await Product.findAll({
                     where: { id: productIds },
                 });
-
+                if (foundProducts.length !== productIds.length) {
+                    return res
+                        .status(400)
+                        .json({ message: 'Algunos productos no existen' });
+                }
                 await newOrder.addProducts(foundProducts);
             }
 

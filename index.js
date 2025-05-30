@@ -13,6 +13,12 @@ app.use('/categories', require('./routes/categories'));
 //endpoints de pedidos
 app.use('/orders', require('./routes/orders'));
 
+//endpoints de reviews
+app.use('/reviews', require('./routes/reviews'));
+
+//endpoints de users
+app.use('/users', require('./routes/users'));
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

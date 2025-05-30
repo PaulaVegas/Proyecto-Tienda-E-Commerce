@@ -1,10 +1,10 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
         return queryInterface.bulkInsert('Products', [
             {
+                id: 1,
                 name: 'Camiseta básica',
                 price: 12.99,
                 description: 'Camiseta de algodón 100% en varios colores.',
@@ -12,6 +12,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 2,
                 name: 'Zapatillas deportivas',
                 price: 59.9,
                 description: 'Zapatillas para correr con suela amortiguada.',
@@ -19,6 +20,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 3,
                 name: 'El nombre del viento',
                 price: 18.95,
                 description:
@@ -27,6 +29,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 4,
                 name: 'Sapiens: De animales a dioses',
                 price: 22.5,
                 description:
@@ -35,6 +38,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 5,
                 name: 'Smartphone XYZ',
                 price: 399.99,
                 description:
@@ -43,6 +47,7 @@ module.exports = {
                 updatedAt: new Date(),
             },
             {
+                id: 6,
                 name: 'Auriculares Bluetooth ABC',
                 price: 79.9,
                 description:
@@ -52,5 +57,7 @@ module.exports = {
             },
         ]);
     },
-    async down(queryInterface, Sequelize) {},
+    async down(queryInterface, Sequelize) {
+        return queryInterface.bulkDelete('Products', null, {});
+    },
 };

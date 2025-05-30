@@ -18,6 +18,7 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT,
             },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -26,12 +27,6 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
-            references: {
-                model: 'categories', // Name of the table, not the model
-                key: 'id',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'CASCADE',
         });
     },
     async down(queryInterface, Sequelize) {

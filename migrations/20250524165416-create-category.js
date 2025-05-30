@@ -15,6 +15,7 @@ module.exports = {
             description: {
                 type: Sequelize.STRING,
             },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -23,12 +24,6 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.DATE,
             },
-            references: {
-                model: 'Products', // Name of the table, not the model
-                key: 'id',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'CASCADE',
         });
     },
     async down(queryInterface, Sequelize) {
