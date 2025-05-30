@@ -5,7 +5,7 @@ const { jwt_secret } = require('../config/config.json')['development'];
 const { Op } = Sequelize;
 
 const UserController = {
-    create(req, res) {
+    async create(req, res, next) {
         try {
             if (!req.body.password) {
                 return res
@@ -13,20 +13,23 @@ const UserController = {
                     .json({ message: 'Password es obligatorio' });
             }
             req.body.role = 'user';
-            const passwordEncrypted = bcrypt.hashSync(req.body.password, 10);
-            User.create({ ...req.body, password: passwordEncrypted })
-                .then(user =>
-                    res
-                        .status(201)
-                        .send({ message: 'Usuario creado con éxito', user })
-                )
-                .catch(err => {
-                    console.error(err);
-                    res.status(500).json({ message: 'Error creando usuario' });
-                });
+            const password = await bcrypt.hash(req.body.password, 10);
+            const user = await User.create({ ...req.body, password });
+            res.send(user);
+            // User.create({ ...req.body, password: passwordEncrypted })
+            //     .then(user =>
+            //         res
+            //             .status(201)
+            //             .send({ message: 'Usuario creado con éxito', user })
+            //     )
+            //     .catch(err => {
+            //         console.error(err);
+            //         res.status(500).json({ message: 'Error creando usuario' });
+            //     });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error interno' });
+            next(error);
         }
     },
     async getAll(req, res) {

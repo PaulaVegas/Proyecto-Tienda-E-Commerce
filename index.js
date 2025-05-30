@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const { typeError } = require('./middlewares/errors');
 const PORT = 3000;
 
 app.use(express.json());
@@ -18,6 +19,8 @@ app.use('/reviews', require('./routes/reviews'));
 
 //endpoints de users
 app.use('/users', require('./routes/users'));
+
+app.use(typeError);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
