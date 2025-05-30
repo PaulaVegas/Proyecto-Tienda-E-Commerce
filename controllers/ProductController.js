@@ -12,6 +12,20 @@ const ProductController = {
         try {
             const { name, price, description, CategoryIds } = req.body;
 
+            if (!name || price === undefined || !description) {
+                return res.status(400).json({
+                    message:
+                        'Error: Debes rellenar todos los campos obligatorios: name, price y description.',
+                });
+            }
+
+            if (typeof price !== 'number' || price < 0) {
+                return res.status(400).json({
+                    message:
+                        'Error: El campo price debe ser un número positivo.',
+                });
+            }
+
             const newProduct = await Product.create({
                 name,
                 price,

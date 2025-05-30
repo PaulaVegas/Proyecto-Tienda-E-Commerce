@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // Many-to-many con Product a través de ProductCategories
             Category.belongsToMany(models.Product, {
-                through: 'ProductCategories',
+                through: 'ProductCategory',
                 foreignKey: 'CategoryId',
                 otherKey: 'ProductId',
                 as: 'products',

@@ -4,6 +4,18 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        console.error(
+            'Error de JSON mal formado en ruta:',
+            req.method,
+            req.url
+        );
+        return res.status(400).json({ message: 'JSON malformado o vacío' });
+    }
+    next();
+});
+
 // endpoints de productos
 app.use('/products', require('./routes/products'));
 
