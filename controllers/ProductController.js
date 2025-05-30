@@ -11,7 +11,11 @@ const ProductController = {
     createProduct: async (req, res) => {
         try {
             const { name, price, description, CategoryIds } = req.body;
-
+            if (!name || !price || !description) {
+                return res.status(400).json({
+                    message: 'Debes rellenar todos los campos',
+                });
+            }
             const newProduct = await Product.create({
                 name,
                 price,
