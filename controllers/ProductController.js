@@ -11,7 +11,7 @@ const ProductController = {
     createProduct: async (req, res) => {
         try {
             const { name, price, description, CategoryIds } = req.body;
-
+            const imagePath = req.file ? req.file.path : null;
             if (!name || price === undefined || !description) {
                 return res.status(400).json({
                     message:
@@ -27,9 +27,8 @@ const ProductController = {
             }
 
             const newProduct = await Product.create({
-                name,
-                price,
-                description,
+                ...req.body,
+                image: imagePath,
             });
 
             if (CategoryIds && CategoryIds.length > 0) {
@@ -48,7 +47,10 @@ const ProductController = {
                 }
             );
 
-            res.status(201).json(productWithCategories);
+            res.status(201).json({
+                message: 'Producto creado',
+                productWithCategories,
+            });
         } catch (error) {
             console.error(error);
             res.status(500).json({
@@ -107,14 +109,10 @@ const ProductController = {
     },
 
     async update(req, res) {
+        console.log('req.body:', req.body);
         try {
             const productId = req.params.id;
             const { name, price, description, CategoryIds } = req.body;
-
-            await Product.update(
-                { name, price, description },
-                { where: { id: productId } }
-            );
 
             const product = await Product.findByPk(productId);
             if (!product) {
@@ -123,14 +121,60 @@ const ProductController = {
                     .send({ message: 'Producto no encontrado' });
             }
 
-            if (CategoryIds && Array.isArray(CategoryIds)) {
-                const categories = await Category.findAll({
-                    where: { id: CategoryIds },
+            const imagePath = req.file ? req.file.path : product.image;
+
+            // Validar y parsear price a número
+            const priceNum = parseFloat(price);
+            if (isNaN(priceNum) || priceNum < 0) {
+                return res.status(400).json({
+                    message: 'El campo price debe ser un número positivo',
                 });
-                await product.setCategories(categories);
             }
 
-            res.send('Producto actualizado con éxito');
+            // Actualizar el producto
+            await Product.update(
+                { name, price: priceNum, description, image: imagePath },
+                { where: { id: productId } }
+            );
+
+            // Manejar categorías solo si CategoryIds está definido
+            if (CategoryIds) {
+                let categoryIdsArray;
+                try {
+                    categoryIdsArray = Array.isArray(CategoryIds)
+                        ? CategoryIds
+                        : JSON.parse(CategoryIds);
+                } catch {
+                    return res.status(400).json({
+                        message: 'CategoryIds debe ser un array JSON válido',
+                    });
+                }
+
+                if (Array.isArray(categoryIdsArray)) {
+                    const categories = await Category.findAll({
+                        where: { id: categoryIdsArray },
+                    });
+                    await product.setCategories(categories);
+                } else {
+                    return res
+                        .status(400)
+                        .json({ message: 'CategoryIds debe ser un array' });
+                }
+            }
+
+            // Traer el producto actualizado para enviar como respuesta
+            const updatedProduct = await Product.findByPk(productId, {
+                include: {
+                    model: Category,
+                    as: 'categories',
+                    through: { attributes: [] },
+                },
+            });
+
+            res.json({
+                message: 'Producto actualizado con éxito',
+                product: updatedProduct,
+            });
         } catch (error) {
             console.error(error);
             res.status(500).send({
