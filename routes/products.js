@@ -10,5 +10,6 @@ router.get('/search/name/:name', ProductController.searchProductByName);
 router.get('/search/price/:price', ProductController.searchProductByPrice);
 router.get('/order/price/desc', ProductController.orderByPriceDesc);
 router.get('/:id', ProductController.getById);
+router.post('/addCategories', ProductController.addCategories);
 
 module.exports = router;

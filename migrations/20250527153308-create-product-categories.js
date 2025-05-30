@@ -11,7 +11,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'Categories', // nombre de la tabla
+                    model: 'Categories',
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',
@@ -21,7 +21,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'Products', // nombre de la tabla
+                    model: 'Products',
                     key: 'id',
                 },
                 onUpdate: 'CASCADE',

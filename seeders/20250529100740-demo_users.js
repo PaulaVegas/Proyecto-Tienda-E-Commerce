@@ -1,6 +1,6 @@
 'use strict';
 
-const bcrypt = require('bcryptjs'); // Opcional si quieres guardar passwords encriptadas
+const bcrypt = require('bcryptjs');
 
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -9,7 +9,8 @@ module.exports = {
                 id: 1,
                 username: 'juanperez',
                 email: 'juan.perez@example.com',
-                password: bcrypt.hashSync('password123', 10), // Encriptar password si tienes ese campo
+                password: bcrypt.hashSync('password123', 10),
+                role: 'user',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
@@ -18,6 +19,7 @@ module.exports = {
                 username: 'ana_lopez',
                 email: 'ana.lopez@example.com',
                 password: bcrypt.hashSync('securepass', 10),
+                role: 'admin',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },

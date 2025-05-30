@@ -18,15 +18,7 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT,
             },
-            categoryId: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'Categories',
-                    key: 'id',
-                },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE',
-            },
+
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
