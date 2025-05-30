@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'UserId',
                 as: 'tokens',
             });
-            User.hasMany(models.Review, { foreignKey: 'UserId' });
+            User.hasMany(models.Review, {
+                foreignKey: 'UserId',
+                as: 'reviews',
+            });
         }
     }
 
@@ -24,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             username: DataTypes.STRING,
             email: DataTypes.STRING,
             password: DataTypes.STRING,
+            role: DataTypes.STRING,
         },
         {
             sequelize,

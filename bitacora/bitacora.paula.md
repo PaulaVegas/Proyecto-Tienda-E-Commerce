@@ -19,9 +19,9 @@
 | 27/05/2025 | Crear endpoint para ver categorías con productos         | ✅ Hecho |
 | 27/05/2025 | Crear seeder con 5 categorías                            | ✅ Hecho |
 | 27/05/2025 | Crear seeder con 5 categorías                            | ✅ Hecho |
-| /05/2025 | Crear controlador de usuario                           | ⏳ En curso |
-| /05/2025 | Implementar bcrypt para usuarios                        | ⏳ En curso |
-| 27/05/2025 | CRUD de users        | ⏳ En curso |
+| 30/05/2025 | Crear controlador de usuario                           | ✅ Hecho|
+| 30/05/2025 | Implementar bcrypt para usuarios                        | ✅ Hecho |
+| 30/05/2025 | CRUD de users        | ✅ Hecho |
 | /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
@@ -161,7 +161,7 @@ router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por
 ---
 
 ### 4. 🌱 Seeders
-Seeder para insertar categorías, products, etc:
+Seeder para insertar categorías, products, users:
 Ejemplo:
 
 ```js
@@ -230,9 +230,10 @@ npx sequelize-cli db:seed:all
 Probado con Postman:
 
 - ✔ `/categories` devuelve todas con productos.
-- ✔ CRUD completo probado y funcional. 
+- ✔ CRUD completo de *categories* probado y funcional. 
+- ✔ CRUD completo de *users* probado y funcional. 
 - X `/users` devuelve todos con sus pedidos.
-
+- ✔ Conectar los modelos de usuarios y pedidos
 ---
 
 ## 🧩 Problemas encontrados
@@ -245,7 +246,7 @@ Probado con Postman:
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
-- Conectar los modelos de usuarios y pedidos
+  
 - Testear todos los endpoints
   
 ---

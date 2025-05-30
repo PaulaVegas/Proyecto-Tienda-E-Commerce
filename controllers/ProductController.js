@@ -221,6 +221,32 @@ const ProductController = {
             res.status(500).json({ error: error.message });
         }
     },
+    async addCategories(req, res) {
+        try {
+            const { productId, categoryIds } = req.body;
+            const product = await Product.findByPk(productId);
+            if (!product)
+                return res
+                    .status(404)
+                    .json({ message: 'Producto no encontrado' });
+            const categories = await Category.findAll({
+                where: {
+                    id: categoryIds,
+                },
+            });
+            if (categories.length !== categoryIds.length) {
+                return res.status(400).json({
+                    message: 'Algunas categorías no fueron encontradas',
+                });
+            }
+            await product.addCategories(categories);
+            res.status(200).json({
+                message: 'Categorías añadidas al producto correctamente',
+            });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
 };
 
 module.exports = ProductController;
