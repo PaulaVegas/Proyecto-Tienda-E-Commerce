@@ -22,6 +22,7 @@
 | 30/05/2025 | Crear controlador de usuario                           | ✅ Hecho|
 | 30/05/2025 | Implementar bcrypt para usuarios                        | ✅ Hecho |
 | 30/05/2025 | CRUD de users        | ✅ Hecho |
+| 30/05/2025 | Implementación de multer    | ✅ Hecho |
 | /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
@@ -261,3 +262,4 @@ Probado con Postman:
 | 27/05/2025  |     `feat: seeders added `     | feature/categories  |
 | 27/05/2025  | `feat: seeder de categorías`                 | feature/categories  |
 | 29/05/2025  | `feat: fixed migrations and models`                 | feature/userauth |
+| 30/05/2025  | `feature: upload product images with multer`                | feature/multer|
