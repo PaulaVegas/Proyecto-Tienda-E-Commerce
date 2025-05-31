@@ -243,7 +243,7 @@ Probado con Postman:
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
 - Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
 - Las relaciones y migraciones estaban mal establecidas.
-  
+- Creada copia local  
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
