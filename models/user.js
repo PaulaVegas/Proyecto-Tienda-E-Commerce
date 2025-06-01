@@ -4,13 +4,10 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
-            // Un usuario tiene muchos pedidos (Orders)
             User.hasMany(models.Order, {
                 foreignKey: 'UserId',
                 as: 'orders',
             });
-
-            // Un usuario puede tener muchos tokens (por ejemplo, para sesiones)
             User.hasMany(models.Token, {
                 foreignKey: 'UserId',
                 as: 'tokens',
@@ -28,19 +25,39 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    notNull: { message: 'Por favor introduce tu nombre' },
+                    notNull: { msg: 'Por favor introduce tu nombre' },
+                    notEmpty: { msg: 'El nombre no puede estar vacío' },
                 },
             },
             email: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                unique: true,
                 validate: {
-                    notNull: { message: 'Por favor introduce tu email' },
-                    isEmail: { message: 'Por favor introduce un email válido' },
+                    notNull: { msg: 'Por favor introduce tu email' },
+                    isEmail: { msg: 'Por favor introduce un email válido' },
+                    notEmpty: { msg: 'El email no puede estar vacío' },
                 },
             },
-            password: DataTypes.STRING,
-            role: DataTypes.STRING,
+            password: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notNull: { msg: 'La contraseña es obligatoria' },
+                    notEmpty: { msg: 'La contraseña no puede estar vacía' },
+                },
+            },
+            role: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                defaultValue: 'user',
+                validate: {
+                    isIn: {
+                        args: [['user', 'admin']],
+                        msg: 'El rol debe ser user o admin',
+                    },
+                },
+            },
         },
         {
             sequelize,

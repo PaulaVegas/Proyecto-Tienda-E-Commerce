@@ -4,7 +4,13 @@ const ProductController = require('../controllers/ProductController');
 const upload = require('../middlewares/upload');
 const { authentication, isAdmin } = require('../middlewares/authentication');
 
-router.post('/', authentication, isAdmin, ProductController.createProduct);
+router.post(
+    '/',
+    authentication,
+    isAdmin,
+    upload.single('image'),
+    ProductController.createProduct
+);
 router.put(
     '/:id',
     authentication,
@@ -19,6 +25,5 @@ router.get('/search/price/:price', ProductController.searchProductByPrice);
 router.get('/order/price/desc', ProductController.orderByPriceDesc);
 router.get('/:id', ProductController.getById);
 router.post('/addCategories', ProductController.addCategories);
-router.post('/', upload.single('image'), ProductController.createProduct);
 
 module.exports = router;

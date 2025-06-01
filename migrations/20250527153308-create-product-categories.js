@@ -41,4 +41,8 @@ module.exports = {
     down: async queryInterface => {
         await queryInterface.dropTable('ProductCategories');
     },
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 870d6d3 (pruebas)

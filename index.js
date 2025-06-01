@@ -3,9 +3,7 @@ const path = require('path');
 const app = express();
 const { typeError } = require('./middlewares/errors');
 const PORT = 3000;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const loginRouter = require('./routes/login');
 
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
@@ -18,6 +16,10 @@ app.use((err, req, res, next) => {
     }
     next();
 });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/login', loginRouter);
 
 // endpoints de productos
 app.use('/products', require('./routes/products'));
