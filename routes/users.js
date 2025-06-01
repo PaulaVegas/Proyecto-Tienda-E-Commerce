@@ -9,5 +9,6 @@ router.get('/', authentication, UserController.getAll);
 router.put('/:id', authentication, UserController.update);
 router.delete('/logout', authentication, UserController.logout);
 router.delete('/:id', authentication, UserController.delete);
+router.get('/orders/:id', authentication, UserController.getUserWithOrders);
 
 module.exports = router;
