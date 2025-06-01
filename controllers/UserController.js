@@ -1,4 +1,11 @@
-const { User, Order, Token, Sequelize, Review } = require('../models/index.js');
+const {
+    User,
+    Order,
+    Token,
+    Sequelize,
+    Review,
+    Product,
+} = require('../models/index.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/config.json')['development'];
@@ -139,6 +146,49 @@ const UserController = {
             console.log(error);
             res.status(500).send({
                 message: 'Hubo un problema al tratar de desconectarte',
+            });
+        }
+    },
+    async getUserWithOrders(req, res) {
+        try {
+            const userId = req.params.id;
+
+            const user = await User.findByPk(userId, {
+                attributes: { exclude: ['password'] },
+                include: [
+                    {
+                        model: Order,
+                        as: 'orders',
+                        attributes: ['id', 'createdAt', 'status'],
+                        include: [
+                            {
+                                model: Product,
+                                as: 'products',
+                                attributes: [
+                                    'id',
+                                    'name',
+                                    'price',
+                                    'description',
+                                ],
+                                through: { attributes: [] },
+                            },
+                        ],
+                    },
+                ],
+            });
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Usuario no encontrado' });
+            }
+
+            res.json(user);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Error al obtener datos del usuario',
+                error: error.message,
             });
         }
     },

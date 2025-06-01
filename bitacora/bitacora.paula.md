@@ -170,52 +170,29 @@ Ejemplo:
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        return queryInterface.bulkInsert('Categories', [
+        return queryInterface.bulkInsert('Products', [
             {
-                name: 'Libros',
-                description: 'Categoría para libros y material de lectura.',
+                id: 1,
+                name: 'Camiseta básica',
+                price: 12.99,
+                description: 'Camiseta de algodón 100% en varios colores.',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
             {
-                name: 'Tecnología',
-                description: 'Productos tecnológicos y gadgets.',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-            {
-                name: 'Ropa',
-                description: 'Prendas de vestir y accesorios de moda.',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-            {
-                name: 'Deportes',
-                description: 'Equipamiento y ropa deportiva.',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-            {
-                name: 'Accesorios',
-                description: 'Complementos y accesorios varios.',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
-            {
-                name: 'Ofertas',
-                description:
-                    'Productos con descuentos y promociones especiales.',
+                id: 2,
+                name: 'Zapatillas deportivas',
+                price: 59.9,
+                description: 'Zapatillas para correr con suela amortiguada.',
                 createdAt: new Date(),
                 updatedAt: new Date(),
             },
         ]);
     },
-
     async down(queryInterface, Sequelize) {
-        return queryInterface.bulkDelete('Categories', null, {});
+        return queryInterface.bulkDelete('Products', null, {});
     },
 };
-
 ```
 
 Ejecutado con:
@@ -233,8 +210,9 @@ Probado con Postman:
 - ✔ `/categories` devuelve todas con productos.
 - ✔ CRUD completo de *categories* probado y funcional. 
 - ✔ CRUD completo de *users* probado y funcional. 
-- X `/users` devuelve todos con sus pedidos.
+- ✔ `/users` devuelve todos con sus pedidos.
 - ✔ Conectar los modelos de usuarios y pedidos
+  
 ---
 
 ## 🧩 Problemas encontrados
@@ -243,7 +221,23 @@ Probado con Postman:
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
 - Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
 - Las relaciones y migraciones estaban mal establecidas.
-  
+- Creada copia local  
+- En la tabla `Orders` username aparece null, habría que corregir el controlador  para que coja el usuario de forma dinámica
+- Ejemplo:
+```js
+const orders = await Order.findAll({
+  where: { UserId: userId },  
+  include: [
+    {
+      model: User,
+      attributes: ['username'],
+      as: 'User' 
+    }
+  ]
+});
+```
+- En la tabla `Orders` no aparecen los productos
+- 
 ---
 
 ## 📌 Mejoras pendientes o sugerencias

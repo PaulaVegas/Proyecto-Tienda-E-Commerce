@@ -4,10 +4,10 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         const [products] = await queryInterface.sequelize.query(
-            `SELECT id FROM "Products";`
+            `SELECT id FROM Products;`
         );
         const [users] = await queryInterface.sequelize.query(
-            `SELECT id FROM "Users";`
+            `SELECT id FROM Users;`
         );
 
         if (users.length === 0) {
