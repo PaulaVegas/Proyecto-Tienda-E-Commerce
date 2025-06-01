@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     class Review extends Model {
         static associate(models) {
             Review.belongsTo(models.User, { foreignKey: 'UserId', as: 'user' });
-            Review.belongsTo(models.Product, { foreignKey: 'ProductId' });
+            Review.belongsTo(models.Product, {
+                foreignKey: 'ProductId',
+                as: 'product',
+            });
         }
     }
     Review.init(

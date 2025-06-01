@@ -17,6 +17,7 @@ const OrderController = {
                 message: 'Error al obtener los pedidos',
                 error: error.message,
             });
+            console.log(JSON.stringify(order, null, 2));
         }
     },
 
@@ -40,11 +41,13 @@ const OrderController = {
                         .json({ message: 'Algunos productos no existen' });
                 }
                 await newOrder.addProducts(foundProducts);
+                console.log('Productos añadidos a la orden correctamente');
             }
 
             const orderWithProducts = await Order.findByPk(newOrder.id, {
                 include: {
                     model: Product,
+                    as: 'products',
                     through: { attributes: [] },
                 },
             });
