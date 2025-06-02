@@ -114,7 +114,7 @@ npm install express sequelize mysql2
 ```
 
 ```bash
-npm install bcryptjs jsonwebtoken
+npm install bcryptjs jsonwebtoken multer
 ```
 
 - Ingresa tus datos de MySql en ***config.json*** para poder crear la db

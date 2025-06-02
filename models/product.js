@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // Relación many-to-many con Category mediante ProductCategories
             Product.belongsToMany(models.Category, {
-                through: 'ProductCategories',
+                through: 'ProductCategory',
                 foreignKey: 'ProductId',
                 otherKey: 'CategoryId',
                 as: 'categories', // alias opcional
@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
             name: DataTypes.STRING,
             price: DataTypes.DECIMAL,
             description: DataTypes.TEXT,
+            image: {
+                type: DataTypes.STRING,
+            },
         },
         {
             sequelize,

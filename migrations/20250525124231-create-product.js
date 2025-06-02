@@ -18,7 +18,9 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT,
             },
-
+            image: {
+                type: Sequelize.STRING,
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -29,7 +31,7 @@ module.exports = {
             },
         });
     },
-    async down(queryInterface, Sequelize) {
+    down: async (queryInterface, Sequelize) => {
         await queryInterface.dropTable('Products');
     },
 };

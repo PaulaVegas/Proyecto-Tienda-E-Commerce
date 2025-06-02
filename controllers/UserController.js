@@ -1,11 +1,18 @@
-const { User, Order, Token, Sequelize, Review } = require('../models/index.js');
+const {
+    User,
+    Order,
+    Token,
+    Sequelize,
+    Review,
+    Product,
+} = require('../models/index.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/config.json')['development'];
 const { Op } = Sequelize;
 
 const UserController = {
-    create(req, res) {
+    async create(req, res, next) {
         try {
             if (!req.body.password) {
                 return res
@@ -13,20 +20,23 @@ const UserController = {
                     .json({ message: 'Password es obligatorio' });
             }
             req.body.role = 'user';
-            const passwordEncrypted = bcrypt.hashSync(req.body.password, 10);
-            User.create({ ...req.body, password: passwordEncrypted })
-                .then(user =>
-                    res
-                        .status(201)
-                        .send({ message: 'Usuario creado con éxito', user })
-                )
-                .catch(err => {
-                    console.error(err);
-                    res.status(500).json({ message: 'Error creando usuario' });
-                });
+            const password = await bcrypt.hash(req.body.password, 10);
+            const user = await User.create({ ...req.body, password });
+            res.send(user);
+            // User.create({ ...req.body, password: passwordEncrypted })
+            //     .then(user =>
+            //         res
+            //             .status(201)
+            //             .send({ message: 'Usuario creado con éxito', user })
+            //     )
+            //     .catch(err => {
+            //         console.error(err);
+            //         res.status(500).json({ message: 'Error creando usuario' });
+            //     });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error interno' });
+            next(error);
         }
     },
     async getAll(req, res) {
@@ -136,6 +146,49 @@ const UserController = {
             console.log(error);
             res.status(500).send({
                 message: 'Hubo un problema al tratar de desconectarte',
+            });
+        }
+    },
+    async getUserWithOrders(req, res) {
+        try {
+            const userId = req.params.id;
+
+            const user = await User.findByPk(userId, {
+                attributes: { exclude: ['password'] },
+                include: [
+                    {
+                        model: Order,
+                        as: 'orders',
+                        attributes: ['id', 'createdAt', 'status'],
+                        include: [
+                            {
+                                model: Product,
+                                as: 'products',
+                                attributes: [
+                                    'id',
+                                    'name',
+                                    'price',
+                                    'description',
+                                ],
+                                through: { attributes: [] },
+                            },
+                        ],
+                    },
+                ],
+            });
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Usuario no encontrado' });
+            }
+
+            res.json(user);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Error al obtener datos del usuario',
+                error: error.message,
             });
         }
     },
