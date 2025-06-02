@@ -215,7 +215,7 @@ Probado con Postman:
   
 ---
 
-## 🧩 Problemas encontrados
+# 🧩 Problemas encontrados
 
 - El modelo `Product` no tenía aún relación definida al principio, por lo que tuve que esperar a su implementación para probar correctamente las asociaciones.
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
@@ -237,7 +237,124 @@ const orders = await Order.findAll({
 });
 ```
 - En la tabla `Orders` no aparecen los productos
-- 
+
+- El viernes 30/05 a las 17 _compañera_ hace un commit *99ddd02* llamado `Products validations and authentications`. En ese commit, entre otros cambios, está el fichero de la migración `product-categories` vacío. _Compañera_ dice que, en ese estado del fichero, todo le funciona perfectamente.
+- El viernes 30/05 a las 18 asistimos a la clase de validaciones, tras la cual actualizo el código para añadir lo aprendido; primero en mi rama feature/userauth, y después a develop. Todo funcionaba correctamente.
+- Viernes 30/05 a las 21.30 _compañera_ manda mensaje diciendo `He estado revisando lo que está en github y no están funcionando parte de lo que he hecho, como yo lo dejé. Cuando las tareas a realizar se definieron al principio del proyecto.`
+- Se realiza reunión el domingo por la mañana, donde nos mostramos mutuamente el funcionamiento desde nuestros ordenadores. Procedo a arreglar errores e inconsistencias del código:
+En models/reviews corrijo
+ ```js  
+ `SELECT id FROM "Products";`
+ `SELECT id FROM "Users";`
+ ```
+ por
+ ```js
+ `SELECT id FROM Products;`
+ `SELECT id FROM Users;`
+```
+y 
+
+```js
+Review.belongsTo(models.Product, {
+                foreignKey: 'ProductId',
+                as: 'product',
+            });
+```            
+
+En el OrderController añado la línea
+```js
+as: 'products',
+```
+
+Para que asocie correctamente el pedido con los productos.
+Añado el endpoint `getUserWithOrders` al UserController y creo la ruta.
+Hago un seeder de la tabla intermedia `OrderProducts` ya que estaba vacía.
+Compruebo que todo funcione correctamente con una instalación limpia de la db, y subo un vídeo confirmándolo en `assets` (demo_endpoints.mp4)  
+- Domingo por la tarde _compañera_ llama por telefóno diciendo que no le funciona el código. Por imposibilidad de arreglarlo de forma telefónica, se queda en mirarlo en clase al día siguiente.
+- Domingo sobre las 00:00 _compañera_ hace un commit a la rama `develop` llamado `Screen Captures Added` con las siguientes modificaciones:
+- Carpeta `middlewares`, archivo `authentication.js`:
+*DESAPARECE*    
+```js
+const { User, Token, Sequelize } = require('../models');
+const { Op } = Sequelize;
+const jwt = require('jsonwebtoken');
+const { jwt_secret } = require('../config/config.json')['development'];
+```
+
+y 
+
+```js
+const isAdmin = async (req, res, next) => {
+    const admins = ['admin', 'superadmin'];
+    if (!admins.includes(req.user.role)) {
+        return res.status(403).send({
+            message: 'No tienes permisos',
+        });
+    }
+    next();
+};
+```
+| Versión modificada                                                                                                                                               | Versión original                                                                                                                                                                |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                                                     |                                                                                                                                                                     |
+| const authentication = async (req, res, next) => {                                                                                                       | const { User, Token, Sequelize } = require('../models');                                                                                                                  |
+|     try {                                                                                                                                               | const { Op } = Sequelize;                                                                                                                                                |
+|         const authHeader = req.headers.authorization;                                                                                                   | const jwt = require('jsonwebtoken');                                                                                                                                     |
+|                                                                                                                                                          | const { jwt_secret } = require('../config/config.json')['development'];                                                                                                  |
+|         if (!authHeader) {                                                                                                                              |                                                                                                                                                                          |
+|             return res.status(401).send({ message: 'Token no proporcionado' });                                                                         | const authentication = async (req, res, next) => {                                                                                                                       |
+|         }                                                                                                                                                |     try {                                                                                                                                                               |
+|                                                                                                                                                          |         const token = req.headers.authorization;                                                                                                                        |
+|         const token = authHeader.startsWith('Bearer ')                                                                                                  |         const payload = jwt.verify(token, jwt_secret);                                                                                                                   |
+|             ? authHeader.split(' ')[1]                                                                                                                  |         const user = await User.findByPk(payload.id);                                                                                                                    |
+|             : authHeader;                                                                                                                               |         if (!user) {                                                                                                                                                    |
+|                                                                                                                                                          |             return res.status(404).send({ message: 'Usuario no encontrado' });                                                                                          |
+|         const payload = jwt.verify(token, jwt_secret);                                                                                                  |         }                                                                                                                                                                |
+|                                                                                                                                                          |         const tokenFound = await Token.findOne({                                                                                                                         |
+|         const user = await User.findByPk(payload.id);                                                                                                   |             where: { [Op.and]: [{ UserId: user.id }, { token: token }] },                                                                                               |
+|         if (!user) {                                                                                                                                     |         });                                                                                                                                                              |
+|             return res.status(404).send({ message: 'Usuario no encontrado' });                                                                          |         if (!tokenFound) {                                                                                                                                              |
+|         }                                                                                                                                                |             return res.status(401).send({ message: 'No estas autorizado' });                                                                                            |
+|                                                                                                                                                          |         }                                                                                                                                                                |
+|         const tokenFound = await Token.findOne({                                                                                                        |         req.user = user;                                                                                                                                                |
+|             where: { [Op.and]: [{ UserId: user.id }, { token }] },                                                                                      |         req.token = token;                                                                                                                                              |
+|         });                                                                                                                                             |         next();                                                                                                                                                         |
+|                                                                                                                                                          |     } catch (error) {                                                                                                                                                   |
+|         if (!tokenFound) {                                                                                                                              |         console.log(error);                                                                                                                                             |
+|             return res.status(401).send({ message: 'No estás autorizado' });                                                                            |         res.status(500).send({                                                                                                                                          |
+|         }                                                                                                                                                |             error,                                                                                                                                                      |
+|                                                                                                                                                          |             message: 'Ha habido un problema con el token',                                                                                                              |
+|         req.user = user;                                                                                                                                |         });                                                                                                                                                             |
+|         req.token = token;                                                                                                                              |     }                                                                                                                                                                   |
+|         next();                                                                                                                                         | };                                                                                                                                                                      |
+|     } catch (error) {                                                                                                                                   |                                                                                                                                                                          |
+|         console.error('Error de autenticación:', error.message);                                                                                       | const isAdmin = async (req, res, next) => {                                                                                                                             |
+|         res.status(401).send({                                                                                                                          |     const admins = ['admin', 'superadmin'];                                                                                                                             |
+|             message: 'Ha habido un problema con el token',                                                                                             |     if (!admins.includes(req.user.role)) {                                                                                                                              |
+|         });                                                                                                                                             |         return res.status(403).send({ message: 'No tienes permisos' });                                                                                                 |
+|     }                                                                                                                                                   |     }                                                                                                                                                                   |
+| };                                                                                                                                                      |     next();                                                                                                                                                             |
+|                                                                                                                                                     | };                                                                                                                                                                      |
+|                                                                                                                                                          | module.exports = { authentication, isAdmin };                                                                                                                           |
+|                                                                                                                                                          |                                                                                                                                                                     |
+
+- En el archivo `migrations/20250527153308-create-product-categories.js` se añaden las siguiientes líneas al final:
+```js
+<<<<<<< HEAD
+};
+=======
+};
+>>>>>>> 870d6d3 (pruebas)
+```
+- En el archivo `models/user.js` añade validaciones de username, email, password y rol.
+- Crea dentro de la carpeta `routes` un archivo `login.js` (completamente innecesario ya que ya existía su controlador en `UserController` y la ruta en `routes/user.js`)
+- En el archivo `routes/product.js` borra el endpoint `router.post('/', upload.single('image'), ProductController.createProduct);`, creado para poder añadir una foto con multer a un producto que ya estuviera creado. 
+- En el archivo `seeders/demo-reviews.js` modifica código para añadir una reseña generada automáticamente.
+- En index.js añade 
+```js
+app.use('/login', loginRouter);
+```
+
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
