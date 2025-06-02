@@ -2,7 +2,7 @@
 
 ### 🧑‍💻 Alumno: [Paula]  
 ### 🗓️ Proyecto: E-commerce (API REST con Node, Express, Sequelize y MySQL)  
-### 🧩 Parte asignada: Gestión de Categorías y Seeders  
+### 🧩 Parte asignada: Gestión de Categorías, Users y Seeders  
 
 
 ---
@@ -23,7 +23,7 @@
 | 30/05/2025 | Implementar bcrypt para usuarios                        | ✅ Hecho |
 | 30/05/2025 | CRUD de users        | ✅ Hecho |
 | 30/05/2025 | Implementación de multer    | ✅ Hecho |
-| /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
+| /06/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
 
@@ -338,7 +338,7 @@ const isAdmin = async (req, res, next) => {
 |                                                                                                                                                          | module.exports = { authentication, isAdmin };                                                                                                                           |
 |                                                                                                                                                          |                                                                                                                                                                     |
 
-- En el archivo `migrations/20250527153308-create-product-categories.js` se añaden las siguiientes líneas al final:
+- En el archivo `migrations/20250527153308-create-product-categories.js` se añaden las siguientes líneas al final:
 ```js
 <<<<<<< HEAD
 };
