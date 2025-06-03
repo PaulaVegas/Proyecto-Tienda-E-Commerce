@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Order.init(
         {
+            customerName: DataTypes.STRING,
             total: DataTypes.DECIMAL,
             status: DataTypes.STRING,
             // otros campos que tenga tu tabla de ordenes
