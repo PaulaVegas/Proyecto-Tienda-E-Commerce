@@ -33,12 +33,10 @@
 ### 1.1 🧱 Modelo Category
 
 ```js
-// models/Category.js
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Category extends Model {
         static associate(models) {
-            // Una categoría tiene muchos productos
             Category.belongsToMany(models.Product, {
                 through: 'ProductCategory',
             });
@@ -67,13 +65,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
-            // Un usuario tiene muchos pedidos (Orders)
             User.hasMany(models.Order, {
                 foreignKey: 'UserId',
                 as: 'orders',
             });
 
-            // Un usuario puede tener muchos tokens (por ejemplo, para sesiones)
             User.hasMany(models.Token, {
                 foreignKey: 'UserId',
                 as: 'tokens',
@@ -219,9 +215,8 @@ Probado con Postman:
 
 - El modelo `Product` no tenía aún relación definida al principio, por lo que tuve que esperar a su implementación para probar correctamente las asociaciones.
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
-- Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
+- Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior.
 - Las relaciones y migraciones estaban mal establecidas.
-- Creada copia local  
 - En la tabla `Orders` username aparece null, habría que corregir el controlador  para que coja el usuario de forma dinámica
 - Ejemplo:
 ```js
@@ -240,7 +235,6 @@ const orders = await Order.findAll({
 
 - El viernes 30/05 a las 17 _compañera_ hace un commit *99ddd02* llamado `Products validations and authentications`. En ese commit, entre otros cambios, está el fichero de la migración `product-categories` vacío. _Compañera_ dice que, en ese estado del fichero, todo le funciona perfectamente.
 - El viernes 30/05 a las 18 asistimos a la clase de validaciones, tras la cual actualizo el código para añadir lo aprendido; primero en mi rama feature/userauth, y después a develop. Todo funcionaba correctamente.
-- Viernes 30/05 a las 21.30 _compañera_ manda mensaje diciendo `He estado revisando lo que está en github y no están funcionando parte de lo que he hecho, como yo lo dejé. Cuando las tareas a realizar se definieron al principio del proyecto.`
 - Se realiza reunión el domingo por la mañana, donde nos mostramos mutuamente el funcionamiento desde nuestros ordenadores. Procedo a arreglar errores e inconsistencias del código:
 En models/reviews corrijo
  ```js  
@@ -294,62 +288,9 @@ const isAdmin = async (req, res, next) => {
     next();
 };
 ```
-| Versión modificada                                                                                                                                               | Versión original                                                                                                                                                                |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|                                                                                                                                                     |                                                                                                                                                                     |
-| const authentication = async (req, res, next) => {                                                                                                       | const { User, Token, Sequelize } = require('../models');                                                                                                                  |
-|     try {                                                                                                                                               | const { Op } = Sequelize;                                                                                                                                                |
-|         const authHeader = req.headers.authorization;                                                                                                   | const jwt = require('jsonwebtoken');                                                                                                                                     |
-|                                                                                                                                                          | const { jwt_secret } = require('../config/config.json')['development'];                                                                                                  |
-|         if (!authHeader) {                                                                                                                              |                                                                                                                                                                          |
-|             return res.status(401).send({ message: 'Token no proporcionado' });                                                                         | const authentication = async (req, res, next) => {                                                                                                                       |
-|         }                                                                                                                                                |     try {                                                                                                                                                               |
-|                                                                                                                                                          |         const token = req.headers.authorization;                                                                                                                        |
-|         const token = authHeader.startsWith('Bearer ')                                                                                                  |         const payload = jwt.verify(token, jwt_secret);                                                                                                                   |
-|             ? authHeader.split(' ')[1]                                                                                                                  |         const user = await User.findByPk(payload.id);                                                                                                                    |
-|             : authHeader;                                                                                                                               |         if (!user) {                                                                                                                                                    |
-|                                                                                                                                                          |             return res.status(404).send({ message: 'Usuario no encontrado' });                                                                                          |
-|         const payload = jwt.verify(token, jwt_secret);                                                                                                  |         }                                                                                                                                                                |
-|                                                                                                                                                          |         const tokenFound = await Token.findOne({                                                                                                                         |
-|         const user = await User.findByPk(payload.id);                                                                                                   |             where: { [Op.and]: [{ UserId: user.id }, { token: token }] },                                                                                               |
-|         if (!user) {                                                                                                                                     |         });                                                                                                                                                              |
-|             return res.status(404).send({ message: 'Usuario no encontrado' });                                                                          |         if (!tokenFound) {                                                                                                                                              |
-|         }                                                                                                                                                |             return res.status(401).send({ message: 'No estas autorizado' });                                                                                            |
-|                                                                                                                                                          |         }                                                                                                                                                                |
-|         const tokenFound = await Token.findOne({                                                                                                        |         req.user = user;                                                                                                                                                |
-|             where: { [Op.and]: [{ UserId: user.id }, { token }] },                                                                                      |         req.token = token;                                                                                                                                              |
-|         });                                                                                                                                             |         next();                                                                                                                                                         |
-|                                                                                                                                                          |     } catch (error) {                                                                                                                                                   |
-|         if (!tokenFound) {                                                                                                                              |         console.log(error);                                                                                                                                             |
-|             return res.status(401).send({ message: 'No estás autorizado' });                                                                            |         res.status(500).send({                                                                                                                                          |
-|         }                                                                                                                                                |             error,                                                                                                                                                      |
-|                                                                                                                                                          |             message: 'Ha habido un problema con el token',                                                                                                              |
-|         req.user = user;                                                                                                                                |         });                                                                                                                                                             |
-|         req.token = token;                                                                                                                              |     }                                                                                                                                                                   |
-|         next();                                                                                                                                         | };                                                                                                                                                                      |
-|     } catch (error) {                                                                                                                                   |                                                                                                                                                                          |
-|         console.error('Error de autenticación:', error.message);                                                                                       | const isAdmin = async (req, res, next) => {                                                                                                                             |
-|         res.status(401).send({                                                                                                                          |     const admins = ['admin', 'superadmin'];                                                                                                                             |
-|             message: 'Ha habido un problema con el token',                                                                                             |     if (!admins.includes(req.user.role)) {                                                                                                                              |
-|         });                                                                                                                                             |         return res.status(403).send({ message: 'No tienes permisos' });                                                                                                 |
-|     }                                                                                                                                                   |     }                                                                                                                                                                   |
-| };                                                                                                                                                      |     next();                                                                                                                                                             |
-|                                                                                                                                                     | };                                                                                                                                                                      |
-|                                                                                                                                                          | module.exports = { authentication, isAdmin };                                                                                                                           |
-|                                                                                                                                                          |                                                                                                                                                                     |
 
-- En el archivo `migrations/20250527153308-create-product-categories.js` se añaden las siguientes líneas al final:
-```js
-<<<<<<< HEAD
-};
-=======
-};
->>>>>>> 870d6d3 (pruebas)
-```
-- En el archivo `models/user.js` añade validaciones de username, email, password y rol.
 - Crea dentro de la carpeta `routes` un archivo `login.js` (completamente innecesario ya que ya existía su controlador en `UserController` y la ruta en `routes/user.js`)
 - En el archivo `routes/product.js` borra el endpoint `router.post('/', upload.single('image'), ProductController.createProduct);`, creado para poder añadir una foto con multer a un producto que ya estuviera creado. 
-- En el archivo `seeders/demo-reviews.js` modifica código para añadir una reseña generada automáticamente.
 - En index.js añade 
 ```js
 app.use('/login', loginRouter);

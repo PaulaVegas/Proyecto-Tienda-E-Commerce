@@ -70,5 +70,3 @@ module.exports = {
         return queryInterface.bulkDelete('ProductCategories', null, {});
     },
 };
-
-// Ojo! si ya tenías productos y categorías creadas, debes revisar los IDs de las categorías y productos en tu base de datos para que coincidan con los que se están insertando aquí. Los IDs pueden variar dependiendo del orden en que se hayan creado las categorías y productos. Asegúrate de ajustar los IDs en el código según sea necesario.

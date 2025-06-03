@@ -4,7 +4,7 @@ module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.addColumn('Orders', 'UserId', {
             type: Sequelize.INTEGER,
-            allowNull: true, // Si quieres que sea obligatorio, pon false
+            allowNull: true,
             references: {
                 model: 'Users',
                 key: 'id',
