@@ -143,21 +143,9 @@ Uno (usuario) → muchos (tokens)
 
 Se guarda la clave foránea UserId en la tabla Tokens.
 
---- 
-
-### 3. 🚦 Endpoints implementados
-```js
-router.post('/', CategoryController.create); // Crear categoría
-router.get('/', CategoryController.getAllCategories);
-router.put('/:id', CategoryController.update); // Actualizar categoría
-router.get('/:id', CategoryController.getById); // Mostrar categoría por Id
-router.delete('/:id', CategoryController.delete); // Borrar categoría
-router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por nombre
-```
-
 ---
 
-### 4. 🌱 Seeders
+### 3. 🌱 Seeders
 Seeder para insertar categorías, products, users:
 Ejemplo:
 
@@ -218,84 +206,7 @@ Probado con Postman:
 - Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior.
 - Las relaciones y migraciones estaban mal establecidas.
 - En la tabla `Orders` username aparece null, habría que corregir el controlador  para que coja el usuario de forma dinámica
-- Ejemplo:
-```js
-const orders = await Order.findAll({
-  where: { UserId: userId },  
-  include: [
-    {
-      model: User,
-      attributes: ['username'],
-      as: 'User' 
-    }
-  ]
-});
-```
-- En la tabla `Orders` no aparecen los productos
-
-- El viernes 30/05 a las 17 _compañera_ hace un commit *99ddd02* llamado `Products validations and authentications`. En ese commit, entre otros cambios, está el fichero de la migración `product-categories` vacío. _Compañera_ dice que, en ese estado del fichero, todo le funciona perfectamente.
-- El viernes 30/05 a las 18 asistimos a la clase de validaciones, tras la cual actualizo el código para añadir lo aprendido; primero en mi rama feature/userauth, y después a develop. Todo funcionaba correctamente.
-- Se realiza reunión el domingo por la mañana, donde nos mostramos mutuamente el funcionamiento desde nuestros ordenadores. Procedo a arreglar errores e inconsistencias del código:
-En models/reviews corrijo
- ```js  
- `SELECT id FROM "Products";`
- `SELECT id FROM "Users";`
- ```
- por
- ```js
- `SELECT id FROM Products;`
- `SELECT id FROM Users;`
-```
-y 
-
-```js
-Review.belongsTo(models.Product, {
-                foreignKey: 'ProductId',
-                as: 'product',
-            });
-```            
-
-En el OrderController añado la línea
-```js
-as: 'products',
-```
-
-Para que asocie correctamente el pedido con los productos.
-Añado el endpoint `getUserWithOrders` al UserController y creo la ruta.
-Hago un seeder de la tabla intermedia `OrderProducts` ya que estaba vacía.
-Compruebo que todo funcione correctamente con una instalación limpia de la db, y subo un vídeo confirmándolo en `assets` (demo_endpoints.mp4)  
-- Domingo por la tarde _compañera_ llama por telefóno diciendo que no le funciona el código. Por imposibilidad de arreglarlo de forma telefónica, se queda en mirarlo en clase al día siguiente.
-- Domingo sobre las 00:00 _compañera_ hace un commit a la rama `develop` llamado `Screen Captures Added` con las siguientes modificaciones:
-- Carpeta `middlewares`, archivo `authentication.js`:
-*DESAPARECE*    
-```js
-const { User, Token, Sequelize } = require('../models');
-const { Op } = Sequelize;
-const jwt = require('jsonwebtoken');
-const { jwt_secret } = require('../config/config.json')['development'];
-```
-
-y 
-
-```js
-const isAdmin = async (req, res, next) => {
-    const admins = ['admin', 'superadmin'];
-    if (!admins.includes(req.user.role)) {
-        return res.status(403).send({
-            message: 'No tienes permisos',
-        });
-    }
-    next();
-};
-```
-
-- Crea dentro de la carpeta `routes` un archivo `login.js` (completamente innecesario ya que ya existía su controlador en `UserController` y la ruta en `routes/user.js`)
-- En el archivo `routes/product.js` borra el endpoint `router.post('/', upload.single('image'), ProductController.createProduct);`, creado para poder añadir una foto con multer a un producto que ya estuviera creado. 
-- En index.js añade 
-```js
-app.use('/login', loginRouter);
-```
-
+  
 ---
 
 ## 📌 Mejoras pendientes o sugerencias

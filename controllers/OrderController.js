@@ -26,7 +26,9 @@ const OrderController = {
             const { total, status, customerName, products } = req.body;
 
             const newOrder = await Order.create({
-                total, status, customerName,
+                total,
+                status,
+                customerName,
                 UserId: req.user.id,
             });
 
