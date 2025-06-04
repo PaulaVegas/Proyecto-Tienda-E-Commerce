@@ -6,6 +6,7 @@ module.exports = {
             {
                 id: 1,
                 UserId: 1,
+                customerName: 'juanperez',
                 status: 'pending',
                 total: 89.88,
                 createdAt: new Date(),
@@ -14,6 +15,7 @@ module.exports = {
             {
                 id: 2,
                 UserId: 2,
+                customerName: 'ana_lopez',
                 status: 'completed',
                 total: 59.9,
                 createdAt: new Date(),

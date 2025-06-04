@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const CategoryController = require('../controllers/CategoryController');
 
-router.post('/', CategoryController.create); // Crear categoría
+router.post('/', CategoryController.create);
 router.get('/', CategoryController.getAllCategories);
-router.put('/:id', CategoryController.update); // Actualizar categoría
-router.get('/:id', CategoryController.getById); // Mostrar categoría por Id
-router.delete('/:id', CategoryController.delete); // Borrar categoría
-router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por nombre
+router.put('/:id', CategoryController.update);
+router.get('/:id', CategoryController.getById);
+router.delete('/:id', CategoryController.delete);
+router.get('/search/name/:name', CategoryController.getOneByName);
 
 module.exports = router;

@@ -4,7 +4,6 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Category extends Model {
         static associate(models) {
-            // Many-to-many con Product a través de ProductCategories
             Category.belongsToMany(models.Product, {
                 through: 'ProductCategory',
                 foreignKey: 'CategoryId',

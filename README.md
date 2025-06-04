@@ -17,19 +17,13 @@ El objetivo es desarrollar una API REST para una tienda online (e-commerce), don
 
 ## 🧩 Descripción del proyecto
 
-API REST capaz de siguiente:
+API REST capaz de lo siguiente:
 
 -   🔐 Registro de usuarios usando Bcrypt.
 -   🛡️ Login de usuarios + token + middleware.
 -   🧠 Que sea capaz de crear un CRUD.
 -   🔗 Al menos una relación Many to Many y otra One to Many.
 -   🌱 Utilización de seeders
-
----
-
-## 💥 Requisitos imprescindibles del proyecto:
-
--   Uso de _ramas_ con git, cuando se termine el proyecto deberán quedar dos ramas la `master o main` y la `develop`.
 
 --- 
 
@@ -43,13 +37,6 @@ API REST capaz de siguiente:
 -   JWT (JSON Web Tokens)
 -   Multer (para imágenes)
 -   Git y GitHub
-
--   Para el desarrollo de la API utilizaremos mysql con Sequelize y express.
--   El proyecto se subirá a un repositorio público de GitHub y se valorará la
-    existencia de ramas, así como diversos commits de calidad legible alta para
-    analizar la evolución del proyecto.
--   Será requisito indispensable que el repositorio disponga de un Readme
-    completo.
 
 ---
 
@@ -89,9 +76,6 @@ API REST capaz de siguiente:
 - `README.md`  
   Documento que describe el proyecto, cómo instalarlo, configurarlo y usarlo. Es la guía principal para cualquier persona que quiera entender o colaborar con el proyecto.
 
----
-
-Esta estructura modular facilita la escalabilidad, el mantenimiento y la claridad del código, separando claramente responsabilidades y organizando el proyecto para un desarrollo eficiente.
 
 --- 
 
@@ -149,18 +133,13 @@ sequelize db:seed:all
 npm run dev
 ```
 
-- Prueba con Postman los endpoints.
+- Prueba los endpoints con Postman.
   
 ---
 
-## Screenshots
-![Endpoints con Postman](/assets/categories/endpoint_allCategoriesWithProduct.png)
-
-![Endpoints con Postman](/assets/users/endpoint_getUsers.png)
-
-  
 ## 👨‍💻 Autoras
 
 -   ✍️ Maider 🐙 [@Maiderspb](https://www.github.com/Maiderspb)
 
 -   ✍️ Paula  🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
+

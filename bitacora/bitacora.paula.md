@@ -2,7 +2,7 @@
 
 ### 🧑‍💻 Alumno: [Paula]  
 ### 🗓️ Proyecto: E-commerce (API REST con Node, Express, Sequelize y MySQL)  
-### 🧩 Parte asignada: Gestión de Categorías y Seeders  
+### 🧩 Parte asignada: Gestión de Categorías, Users y Seeders  
 
 
 ---
@@ -23,7 +23,7 @@
 | 30/05/2025 | Implementar bcrypt para usuarios                        | ✅ Hecho |
 | 30/05/2025 | CRUD de users        | ✅ Hecho |
 | 30/05/2025 | Implementación de multer    | ✅ Hecho |
-| /05/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
+| /06/2025 | Testeo completo de endpoints y relaciones                | ⏳ En curso |
 
 ---
 
@@ -33,12 +33,10 @@
 ### 1.1 🧱 Modelo Category
 
 ```js
-// models/Category.js
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Category extends Model {
         static associate(models) {
-            // Una categoría tiene muchos productos
             Category.belongsToMany(models.Product, {
                 through: 'ProductCategory',
             });
@@ -67,13 +65,11 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
-            // Un usuario tiene muchos pedidos (Orders)
             User.hasMany(models.Order, {
                 foreignKey: 'UserId',
                 as: 'orders',
             });
 
-            // Un usuario puede tener muchos tokens (por ejemplo, para sesiones)
             User.hasMany(models.Token, {
                 foreignKey: 'UserId',
                 as: 'tokens',
@@ -147,21 +143,9 @@ Uno (usuario) → muchos (tokens)
 
 Se guarda la clave foránea UserId en la tabla Tokens.
 
---- 
-
-### 3. 🚦 Endpoints implementados
-```js
-router.post('/', CategoryController.create); // Crear categoría
-router.get('/', CategoryController.getAllCategories);
-router.put('/:id', CategoryController.update); // Actualizar categoría
-router.get('/:id', CategoryController.getById); // Mostrar categoría por Id
-router.delete('/:id', CategoryController.delete); // Borrar categoría
-router.get('/search/name/:name', CategoryController.getOneByName); // Buscar por nombre
-```
-
 ---
 
-### 4. 🌱 Seeders
+### 3. 🌱 Seeders
 Seeder para insertar categorías, products, users:
 Ejemplo:
 
@@ -215,29 +199,14 @@ Probado con Postman:
   
 ---
 
-## 🧩 Problemas encontrados
+# 🧩 Problemas encontrados
 
 - El modelo `Product` no tenía aún relación definida al principio, por lo que tuve que esperar a su implementación para probar correctamente las asociaciones.
 - Tuvimos que acordar el nombre exacto de la tabla intermedia `ProductCategories` para que Sequelize no generara una por defecto incorrecta.
-- Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior...
+- Restablecimiento de modelo `ProductCategory` y migración `productcategories` restablecida después de pérdida en commit anterior.
 - Las relaciones y migraciones estaban mal establecidas.
-- Creada copia local  
 - En la tabla `Orders` username aparece null, habría que corregir el controlador  para que coja el usuario de forma dinámica
-- Ejemplo:
-```js
-const orders = await Order.findAll({
-  where: { UserId: userId },  
-  include: [
-    {
-      model: User,
-      attributes: ['username'],
-      as: 'User' 
-    }
-  ]
-});
-```
-- En la tabla `Orders` no aparecen los productos
-- 
+  
 ---
 
 ## 📌 Mejoras pendientes o sugerencias
