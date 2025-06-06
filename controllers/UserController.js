@@ -23,16 +23,6 @@ const UserController = {
             const password = await bcrypt.hash(req.body.password, 10);
             const user = await User.create({ ...req.body, password });
             res.send(user);
-            // User.create({ ...req.body, password: passwordEncrypted })
-            //     .then(user =>
-            //         res
-            //             .status(201)
-            //             .send({ message: 'Usuario creado con éxito', user })
-            //     )
-            //     .catch(err => {
-            //         console.error(err);
-            //         res.status(500).json({ message: 'Error creando usuario' });
-            //     });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error interno' });
@@ -86,13 +76,11 @@ const UserController = {
                     .status(404)
                     .json({ message: 'Usuario no encontrado' });
             }
-
-            // Si envían password, cifrarlo
             if (password) {
                 const bcrypt = require('bcryptjs');
                 req.body.password = bcrypt.hashSync(password, 10);
             } else {
-                delete req.body.password; // para evitar sobreescribir con undefined
+                delete req.body.password;
             }
             await user.update({ username, email, password: req.body.password });
 

@@ -50,7 +50,6 @@ const CategoryController = {
         }
     },
     // Devolver categoría con id
-    // ***** Cuando estén todos los productos creados, deberá traer también los productos asociados
     async getById(req, res) {
         try {
             const category = await Category.findByPk(req.params.id);
