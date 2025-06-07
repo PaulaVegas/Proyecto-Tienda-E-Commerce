@@ -1,4 +1,4 @@
-![banner](./assets/projectbanner.png)
+![banner](./assets/bannerProyecto.png)
 ![GitHub repo size](https://img.shields.io/github/repo-size/PaulaVegas/Proyecto-Tienda-E-Commerce)
 ![GitHub stars](https://img.shields.io/github/stars/PaulaVegas/Proyecto-Tienda-E-Commerce?style=social)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
@@ -10,11 +10,12 @@
 
 En el proyecto de backend se combinan los conocimientos adquiridos en Node.js y Express, junto con MySQL y Sequelize para la gestión de bases de datos relacionales.
 
---- 
+---
 
 ## 🧩 Descripción del proyecto
 
 API REST con lo siguiente:
+
 -   🐢 **Node.js + Express**
 -   🐬 **MySQL** gestionado con **Sequelize**
 -   🔐 Registro de usuarios usando Bcrypt.
@@ -23,7 +24,7 @@ API REST con lo siguiente:
 -   🔗 Al menos una relación Many to Many y otra One to Many.
 -   🌱 Utilización de seeders
 
---- 
+---
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -60,7 +61,8 @@ npm install express sequelize mysql2
 npm install bcryptjs jsonwebtoken multer
 ```
 
-- Ingresa tus datos de MySql en ***config.json*** para poder crear la db
+-   Ingresa tus datos de MySql en **_config.json_** para poder crear la db
+
 ```js
 "development": {
         "username": "tu usuario",
@@ -72,33 +74,36 @@ npm install bcryptjs jsonwebtoken multer
     }
 ```
 
-- Crea la db mediante terminal
+-   Crea la db mediante terminal
+
 ```bash
 sequelize db:create
-  ``` 
+```
 
-- Realiza las migraciones de tablas
+-   Realiza las migraciones de tablas
+
 ```bash
 sequelize db:migrate
 ```
 
-- Usa los seeders para popular las tablas
+-   Usa los seeders para popular las tablas
+
 ```bash
 sequelize db:seed:all
 ```
 
-- Inicia el servidor
+-   Inicia el servidor
+
 ```bash
 npm run dev
 ```
 
-- Prueba los endpoints con Postman.
-  
+-   Prueba los endpoints con Postman.
+
 ---
 
 ## 👨‍💻 Autoras
 
 -   ✍️ Maider 🐙 [@Maiderspb](https://www.github.com/Maiderspb)
 
--   ✍️ Paula  🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
- 
+-   ✍️ Paula 🐙 [@PaulaVegas](https://www.github.com/PaulaVegas)
